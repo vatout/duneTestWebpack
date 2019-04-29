@@ -21,17 +21,28 @@ function getGame(data){
 
 export function installPackage(packageFilePath) {
   console.log("installPackage ", packageFilePath);
-
+  return new Promise(function (resolve, reject) {
+    let installPackagesPath = RcConfig.getPackageInstallPath();
+    let dirName = "pak-" + (new Date().getTime());
+    let packageDir = installPackagesPath + dirName;
+    console.log("packageDir ", packageDir);
+    var zip = new AdmZip(packageFilePath);
+    console.log("zip", zip);
+    var zipEntries = zip.getEntries();
+    console.log("bordel");
+    zip.extractAllTo(packageDir, true);
+    console.log(zipEntries);
+  });
 }
 
 export function* workerInstallationGame(data){
   try{
     console.log("workerInstallGame");
     console.log(data);
-    // const response = yield call(installPackage, data.path);
+//    const response = yield call(installPackage, data.path);
       // if (response.data.status === 200) {
       //     const resultsNot = response.data.response;
-      //     yield  put({ type: 'DOWNLOAD_GAME_SUCCESS'});
+      //     yield  put({ type: 'INSTALLATION_GAME_SUCCESS'});
       // }
   } catch (e) {
     yield put({ type: "INSTALLATION_GAME_FAILURE"});

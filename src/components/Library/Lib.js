@@ -2,13 +2,22 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 
 import { Theme } from '../../utils/Theme';
-import GridList from '@material-ui/core/GridList';
+import { Grid, GridList, Card, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
+import { Link } from "react-router-dom";
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/CloudDownload';
 
+import Button from '@material-ui/core/Button';
+
+import IconButton from '@material-ui/core/IconButton';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
+import InfoIcon from '@material-ui/icons/Info';
+import PlayArrowIcon from '@material-ui/icons/PlayCircleOutline';
+
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import { Redirect } from 'react-router-dom';
 
@@ -37,6 +46,7 @@ class Library extends Component {
       installedGames: [],
       availableGames: [],
       loadOnce: true,
+      tabs: 0,
     }
   }
 
@@ -53,6 +63,10 @@ class Library extends Component {
       }
   }
 
+  handleTabChange = (event, value) => {
+    this.setState({ tabs: value });
+  };
+
   fillInstalled = () => {
       isInstalled = true;
       let result = this.props.installed;
@@ -62,6 +76,7 @@ class Library extends Component {
         game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:7001/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
         tmp.push(game);
       }
+
       this.setState({installedGames: tmp});
     }
 
@@ -74,6 +89,7 @@ class Library extends Component {
         tmp.push(game);
       }
       this.setState({availableGames: tmp});
+
     }
 
   getGameList() {
@@ -86,31 +102,83 @@ class Library extends Component {
     this.props.installProcess(this.props.token);
   }
 
+  renderListTile() {
+    let renderList = [];
+    let icon = '';
+    if (this.state.tabs === 0) {
+      renderList = this.state.availableGames;
+      icon = (
+        <InfoIcon />
+      )
+    } else {
+      renderList = this.state.installedGames;
+      icon = (
+        <PlayArrowIcon />
+      )
+    }
+    return (
+      <GridList cellHeight={180} style={Theme.gridList}>
+        {renderList.map(tile => (
+          <GridListTile key={tile.picPath}>
+            <img src={tile.picPath} alt={tile.name} />
+            <GridListTileBar
+              title={tile.name}
+              subtitle={<span>by: {tile.creator}</span>}
+              actionIcon={
+                <IconButton style={Theme.icon} onClick={() => {this.download(tile.idGame)}}>
+                  {icon}
+                </IconButton>
+              }
+              />
+            </GridListTile>
+
+        ))}
+      </GridList>
+    );
+  }
+
   render() {
     console.log(this.state.availableGames);
       return (
         <div style={Theme.root}>
-          <div style={Theme.Library}>
-            <GridList cellHeight={180} style={Theme.gridList}>
-              <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                <ListSubheader component="div">December</ListSubheader>
-              </GridListTile>
-              {this.state.availableGames.map(tile => (
-                <GridListTile key={tile.picPath}>
-                  <img src={tile.picPath} alt={tile.name} />
-                  <GridListTileBar
-                    title={tile.name}
-                    subtitle={<span>by: {tile.creator}</span>}
-                    actionIcon={
-                      <IconButton style={Theme.icon} onClick={() => {this.download(tile.idGame)}}>
-                        <InfoIcon />
-                      </IconButton>
-                    }
-                  />
-                </GridListTile>
-              ))}
-            </GridList>
-          </div>
+          <Grid style={{flex: 1, flexDirection: "column"}}>
+            <Grid container style={Theme.Library, {minHeight: "75vh"}}>
+              { this.renderListTile()}
+            </Grid>
+            <Grid container style={{flexDirection: "column", paddingBottom: 30, marginBottom: 10}}>
+              <Paper>
+                <Tabs
+                  style={{backgroundColor: '#FEEFC2'}}
+                  value={this.state.tabs}
+                  onChange={this.handleTabChange}
+                  indicatorColor="secondary"
+                  centered
+                >
+                  <Tab label="Activitées installées" />
+                  <Tab label="Activitées disponibles" />
+                </Tabs>
+              </Paper>
+
+              <Grid container style={{flex: 0.9, flexDirection:"row", justifyContent: "center", alignItems: "center"}}>
+                <Grid style={{flex: 0.05}}>
+                  <Button >
+                    <Link to="/menu">
+                      <img src={require("../../assets/logo_back.png")} alt="back"></img>
+                    </Link>
+                  </Button>
+                </Grid>
+
+                <Grid style={{flex: 0.05, padding: 20}}>
+                  <Button onClick={() => {this.props.download()}}>
+                    <img src={require("../../assets/logo_get_app.png")} style={{height:"80px",}} alt="" />
+                  </Button>
+                </Grid>
+              </Grid>
+
+            </Grid>
+
+
+          </Grid>
         </div>
       );
   }

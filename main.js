@@ -5,6 +5,7 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
+const zipUtil = require('adm-zip')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,12 +25,96 @@ if (process.platform === 'win32') {
   app.commandLine.appendSwitch('force-device-scale-factor', '1')
 }
 
+/**
+ * get storage path
+ *
+ * @return {string}
+ */
+function getStoragePath() {
+  let homePath = global.process.env.HOME || global.process.env.USERPROFILE;
+  let storagePath = homePath + "/.DuneGames/";
+  if (!fs.existsSync(storagePath)) {
+    fs.mkdirSync(storagePath);
+  }
+  return storagePath;
+}
+
+/**
+ * get package install directory path
+ *
+ * @return {string}
+ */
+function getPackageInstallPath() {
+  let storagePath = getStoragePath();
+  let installPackagesPath = storagePath + "installed_packages/";
+  if (!fs.existsSync(installPackagesPath)) {
+    fs.mkdirSync(installPackagesPath);
+  }
+  return installPackagesPath;
+}
+
+function installPackage(packageFilePath) {
+
+
+  console.log("installPackage ", packageFilePath);
+  return new Promise(function (resolve, reject) {
+    let installPackagesPath = getPackageInstallPath();
+    let dirName = "pak-" + (new Date().getTime());
+    let packageDir = installPackagesPath + dirName;
+
+    var zip = new zipUtil(packageFilePath);
+    var zipEntries = zip.getEntries();
+    zip.extractAllTo(packageDir, true);
+    console.log("extracted ", zip)
+  });
+  //   let manifestPath = packageDir + "/dn-manifest.json";
+  //   if (!fs.existsSync(manifestPath)) {
+  //     reject('dn-manifest.json not found');
+  //     rimraf(packageDir, function () {});
+  //     return;
+  //   } else {
+  //     let mainifestContent = JSON.parse(fs.readFileSync(manifestPath));
+  //     let keyNotExists = ['packageId', 'version', 'packageName', 'iconFile', 'description', 'options'].filter(x => !Object.keys(mainifestContent).includes(x));
+  //     // check dn-manifest.json
+  //     if (keyNotExists.length != 0) {
+  //       reject("dn-manifest.json " + keyNotExists.join(",") + " not write");
+  //       return;
+  //     }
+  //     // check is installed or not
+  //     if (getInstalledPackages().find(pacakgeInfo => pacakgeInfo.packageId == mainifestContent.packageId) != null) {
+  //       reject("this package already installed");
+  //       return;
+  //     }
+  //     // check icon and options file exists or not
+  //     if (!fs.existsSync(packageDir + "/" + mainifestContent.iconFile)) {
+  //       reject('icon not found');
+  //       return;
+  //     }
+  //     for (let option of mainifestContent.options) {
+  //       if (!fs.existsSync(packageDir + "/" + option.file)) {
+  //         reject(option.file + ' not found');
+  //         rimraf(packageDir, function () {});
+  //         return;
+  //       }
+  //     }
+  //   }
+  //
+  //   // update packages.json
+  //   let configPath = installPackagesPath + "packages.json";
+  //   let packageDirs = (fs.existsSync(configPath)) ? JSON.parse(fs.readFileSync(configPath)): [];
+  //   packageDirs.push(dirName);
+  //   fs.writeFileSync(configPath, JSON.stringify(packageDirs, null, 4));
+  //   resolve(manifestPath);
+  // });
+}
+
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1624,
     height: 968,
     show: false,
+    backgroundColor: '#FEEFC2',
     webPreferences: {
       nodeIntegration: true
     }
@@ -61,6 +146,7 @@ function createWindow() {
   item.once('done', (event, state) => {
     if (state === 'completed') {
       console.log('Download successfully');
+      installPackage(fullPath);
     } else {
       console.log(`Download failed: ${state}`)
     }
