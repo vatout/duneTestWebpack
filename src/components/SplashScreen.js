@@ -27,7 +27,7 @@ export default class SplashScreen extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect push to="/Login" />;
+      return <Redirect push to="/Library" />;
     } else if (this.state.redirectInstall) {
       return <Redirect push to="/Install" />;
     } else {
