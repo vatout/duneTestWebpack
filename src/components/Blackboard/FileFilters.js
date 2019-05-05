@@ -8,7 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/es/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Search from "@material-ui/core/SvgIcon/SvgIcon";
+import Search from "@material-ui/icons/Search";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -88,17 +88,13 @@ class FileFilters extends Component {
         }
     }
 
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
-
     handleClose = () => {
         this.setState({ open: false });
     };
 
     searchFilters = () => {
         this.setState({open: false});
-        this.props.getResults(this.props.token, this.state.private, this.state.recherche, this.state.fileType, this.state.classement);
+        this.props.getResults(this.props.token, this.state.private, this.state.recherche, this.state.fileType === 0 ? '' : this.state.fileType, this.state.classement);
     }
 
     handleChange = (event, value) => {
@@ -122,7 +118,7 @@ class FileFilters extends Component {
                 >
                     <DialogTitle style={{borderBottom: '1px solid #e0e0e0'}}>Ajouter des filtres de recherche</DialogTitle>
                     <DialogContent style={{padding: '24px 24px 24px', borderBottom: '1px solid #e0e0e0'}}>
-                        <Grid container className={classes.root} spacing={30}>
+                        <Grid container className={classes.root} spacing={32}>
                             <Grid item xs={12}>
                                 <Grid container spacing={16}>
                                     <Grid item>
@@ -137,6 +133,7 @@ class FileFilters extends Component {
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="end">
                                                     <Search
+                                                      children={null}
                                                         onClick={this.handleClickShowPassword}
                                                     >
                                                     </Search>
@@ -159,7 +156,7 @@ class FileFilters extends Component {
                                                 onChange={this.handleChange}
                                                 input={
                                                     <OutlinedInput
-                                                        labelWidth={this.state.labelWidth}
+                                                        labelWidth={0}
                                                         name="fileType"
                                                         id="outlined-age-simple"
                                                     />
@@ -189,7 +186,7 @@ class FileFilters extends Component {
                                                 onChange={this.handleChange}
                                                 input={
                                                     <OutlinedInput
-                                                        labelWidth={this.state.labelWidth}
+                                                        labelWidth={0}
                                                         name="classement"
                                                         id="outlined-age-simple"
                                                     />
@@ -205,7 +202,6 @@ class FileFilters extends Component {
                                             control={
                                                 <Checkbox
                                                     checked={this.state.private}
-                                                    value={this.state.showPrivate}
                                                     name="private"
                                                     onChange={this.handleCheck}
                                                 />

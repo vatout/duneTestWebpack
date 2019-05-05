@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-
-import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import { Theme } from '../../utils/Theme';
 import Grid from '@material-ui/core/Grid';
@@ -8,12 +6,41 @@ import ReactPlayer from 'react-player';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import Slide from '@material-ui/core/Slide';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Pause from '@material-ui/icons/Pause';
+import SkipNext from '@material-ui/icons/SkipNext';
+import SkipPrevious from '@material-ui/icons/SkipPrevious';
+import VolumeDown from '@material-ui/icons/VolumeDown';
+import VolumeUp from '@material-ui/icons/VolumeUp';
+import VolumeOff from '@material-ui/icons/VolumeOff';
+import {Card, Paper} from "@material-ui/core";
+
 
 const styles = {
   dashedColorSecondary: {
     backgroundImage: "",
   },
-};
+  scrollPaper:{
+    maxHeight: '100%',
+  }};
+
+
+
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
+
 
 class Media extends Component {
 
@@ -38,22 +65,22 @@ class Media extends Component {
 }
 
   onProgress = state => {
-    console.log('onProgress', state);
     this.setState({ timePlayed: state.played * 100 });
     this.setState({ timeLoaded: state.loaded * 100 });
   }
 
   onDuration = (duration) => {
-    console.log('onDuration', duration)
     this.setState({ duration })
   }
 
   handleUp = () => {
-     this.setState({ volume: this.state.volume + 0.1 });
+    if (this.state.volume + 0.1 <= 1)
+        this.setState({ volume: this.state.volume + 0.1 });
   }
 
   handleDown = () => {
-   this.setState({ volume: this.state.volume - 0.1 });
+    if (this.state.volume - 0.1 >= 0)
+      this.setState({ volume: this.state.volume - 0.1 });
 }
 
   handleMute = () => {
@@ -67,66 +94,85 @@ class Media extends Component {
 
   render() {
     const classes = this.props;
-    console.log (classes);
-
     return (
       <div style={Theme.root}>
-        <Button>
-          <Link to="/blackboard">
-            <img src={require("../../assets/logo_back.png")} alt="back"></img>
-          </Link>
-        </Button>
-        <Grid
-        container spacing={0}
-        direction="row"
-        justify="center"
-        alignItems="center"
-        style={{ minHeight: '0vh' }}>
-          <ReactPlayer
-            style={{margin: 0}}
-          className='react-player'
-          //url='https://www.youtube.com/watch?v=udFlaqoKMDk'
-          url='https://www.dailymotion.com/video/x1wuq0h'
-          width='1580px'
-          height='820px'
+        <Dialog
+          fullScreen
+          open={this.props.file}
+          onClose={this.props.closeFile}
+          TransitionComponent={Transition}
+          className={classes.scrollPaper}
+          style={Theme.root}
+          scroll="body"
 
-          onDuration={this.onDuration}
-          onProgress={this.onProgress}
-          playing={this.state.isPlayed}
-          volume={this.state.volume}
-          muted={this.state.isMuted}>
-          </ReactPlayer>
-          </Grid>
-          <LinearProgress style={{margin:"1%", marginRight:"16%", marginLeft:"16%",  height:"20px"}} color="secondary" variant="buffer" value={this.state.timePlayed} valueBuffer={this.state.timeLoaded} />
-          <Grid
-          container spacing={0}
-          direction="row"
-          justify="space-evenly"
-          alignItems="flex-start"
-          style={{ minHeight: '0vh' }}>
-          <img src={require("../../assets/void.png")} alt="" ></img>
-          <img src={require("../../assets/void.png")} alt="" ></img>
-         <Button onClick={this.handlePlay} color="secondary">
-          <img src={require("../../assets/logo_backward.png")} alt="" ></img>
-        </Button>
-        <Button onClick={this.handlePlay} color="secondary">
-          <img src={require("../../assets/logo_play.png")} alt="" ></img>
-        </Button>
-        <Button onClick={this.handlePlay} color="secondary">
-          <img src={require("../../assets/logo_forward.png")} alt="" ></img>
-        </Button>
-        <Button onClick={this.handleDown} color="secondary">
-          <img src={require("../../assets/volume_down.png")} alt="" ></img>
-        </Button>
-        <Button onClick={this.handleUp} color="secondary">
-          <img src={require("../../assets/volume_up.png")} alt="" ></img>
-        </Button>
-        <Button onClick={this.handleMute} color="secondary">
-          <img src={require("../../assets/volume_muted.png")} alt="" ></img>
-        </Button>
-        <img src={require("../../assets/void.png")} alt="" ></img>
-        <img src={require("../../assets/void.png")} alt="" ></img>
-        </Grid>
+        >
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton color="inherit" onClick={this.props.closeFile} aria-label="Close">
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" className={classes.flex} style={{width: "90%"}}>
+                {this.props.title}
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <DialogContent style={{backgroundColor: 'rgb(254, 239, 194)'}}>
+            <Card>
+                <Grid
+                        container spacing={0}
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
+                        <ReactPlayer
+                              style={{margin: 0}}
+                            className='react-player'
+                              url={[
+                                {src: 'http://176.31.252.134:7001/files/fm/' + this.props.path, type: 'video/mp4'},
+                              ]}
+                            width='1580px'
+                            height='820px'
+
+                            onDuration={this.onDuration}
+                            onProgress={this.onProgress}
+                            playing={this.state.isPlayed}
+                            volume={this.state.volume}
+                            muted={this.state.isMuted}>
+                        </ReactPlayer>
+                        </Grid>
+                            <LinearProgress style={{margin:"1%", marginRight:"16%", marginLeft:"16%",  height:"20px"}} color="secondary" variant="buffer" value={this.state.timePlayed} valueBuffer={this.state.timeLoaded} />
+                        <Grid
+                          container spacing={0}
+                          direction="row"
+                          justify="space-evenly"
+                          alignItems="flex-start"
+                        style={{marginTop: '2%', marginBottom: '2%'}}
+                        >
+                          <Paper>
+                             <Button onClick={this.handlePlay} color="secondary">
+                               <SkipPrevious style={{width: '3.5em', height: '3.5em'}}/>
+                            </Button>
+                            <Button onClick={this.handlePlay} color="secondary">
+                              {this.state.isPlayed ? <Pause style={{width: '3.5em', height: '3.5em'}}/> : <PlayArrow style={{width: '3.5em', height: '3.5em'}}/>}
+                            </Button>
+                            <Button onClick={this.handlePlay} color="secondary">
+                              <SkipNext style={{width: '3.5em', height: '3.5em'}}/>
+
+                            </Button>
+                            <Button onClick={this.handleDown} color="secondary">
+                              <VolumeDown style={{width: '3.5em', height: '3.5em'}}/>
+
+                            </Button>
+                            <Button onClick={this.handleUp} color="secondary">
+                              <VolumeUp style={{width: '3.5em', height: '3.5em'}}/>
+                            </Button>
+                            <Button onClick={this.handleMute} color="secondary">
+                              <VolumeOff style={{width: '3.5em', height: '3.5em'}}/>
+                            </Button>
+                          </Paper>
+                    </Grid>
+                </Card>
+          </DialogContent>
+        </Dialog>
       </div>
 
     );

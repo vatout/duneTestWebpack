@@ -18,7 +18,7 @@ export default class LibraryListItem extends Component {
                 <Card style={{flex: 1, borderRadius: 20, backgroundColor: '#cabd91', margin: '2%' }}>
                     <CardContent>
                         <div style={{}}>
-                          <img height={128} width={128} src={src} alt={this.props.name} resizeMode="contain"/>
+                          <img height={128} width={128} src={src} alt={this.props.name} resizemode="contain"/>
                         </div>
                         <Typography  color="textSecondary" gutterBottom>
                             {truncatedName}

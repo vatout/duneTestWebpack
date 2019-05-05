@@ -12,9 +12,11 @@ import Grid from '@material-ui/core/Grid';
 import {GridList, OutlinedInput, Paper} from "@material-ui/core";
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
+import Refresh from '@material-ui/icons/Refresh';
 import LibraryListItem from '../Library/LibraryListItem';
 import FileFilters from './FileFilters';
 import warning from '../../assets/warning.png';
+import ShowFile from './ShowFile';
 
 function getFakeInfo() {
     return ("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
@@ -83,7 +85,12 @@ export class FilesList extends Component {
         this.state = {
             share: false,
             fileType: 0,
-            open: React.createRef()
+            open: false,
+            openFile: false,
+            idFileOpen: null,
+            typeFileOpen: null,
+            titleFileOpen: null,
+            pathFileOpen: null
         };
     }
 
@@ -96,8 +103,21 @@ export class FilesList extends Component {
     };
 
     componentDidMount = () => {
-        this.props.getResults(this.props.token, this.state.private, '', 0, 1);
+        this.props.getResults(this.props.token, this.state.private, '', '', 1);
         this.setState({open: false});
+    }
+
+    openFileConfirm(idFile, type, title, path){
+      this.setState({openFile: true,
+        idFileOpen: idFile,
+        typeFileOpen: type,
+        titleFileOpen: title,
+      pathFileOpen: path});
+    }
+
+    closeFileConfirm = () =>{
+
+      this.setState({openFile: false});
     }
 
     generateFilesList = () => {
@@ -112,6 +132,7 @@ export class FilesList extends Component {
                     name={file.nom}
                     pic={file.type === "IMG" ? img : file.type === "PDF" ? pdf : file.type === "MP4" ? mp4 : ''}
                     desc={file.description.substring(0, 20) + '...'}
+                    onClick={this.openFileConfirm.bind(this, file.idFile, file.type, file.nom, file.path)}
                 />
             ));
             return files;
@@ -121,6 +142,10 @@ export class FilesList extends Component {
     componentWillUpdate(nextProps, nextState, nextContext) {
         if (this.state.open)
             this.setState({open: false});
+    }
+
+    refresh = () => {
+      window.location.reload();
     }
 
     render() {
@@ -135,6 +160,11 @@ export class FilesList extends Component {
                             </Link>
                         </Button>
                     </div>
+                  <div style={{float: 'right', width: '10%'}}>
+                    <Button color="secondary" onClick={this.refresh}>
+                        <Refresh style={{width: '3em', height: '3em'}}/>
+                    </Button>
+                  </div>
                     <div style={{margin: '0 auto', width: '300px'}}>
                             <Fab variant="extended" color="primary" aria-label="Add" className={classes.margin} onClick={this.handleClickOpen} style={{margin: '10%'}}>
                                 <NavigationIcon className={classes.extendedIcon} />
@@ -172,6 +202,12 @@ export class FilesList extends Component {
 
                     <FileFilters open={this.state.open}/>
 
+                    <ShowFile openConfirm={this.state.openFile}
+                              idFile={this.state.idFileOpen}
+                              type={this.state.typeFileOpen}
+                              title={this.state.titleFileOpen}
+                              closeFileConfirm={this.closeFileConfirm}
+                              path={this.state.pathFileOpen}/>
                     </div>
         );
     }
