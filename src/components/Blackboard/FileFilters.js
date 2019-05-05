@@ -3,7 +3,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/es/TextField";
@@ -20,6 +19,10 @@ import Button from "@material-ui/core/Button";
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
+import MuiDialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const styles = theme => ({
     card: {
@@ -63,6 +66,32 @@ const styles = theme => ({
     formControlLabel: {
         marginTop: theme.spacing.unit,
     },
+});
+
+const DialogTitle = withStyles(theme => ({
+  root: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    margin: 0,
+    padding: theme.spacing.unit * 2,
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit,
+    top: theme.spacing.unit,
+    color: theme.palette.grey[500],
+  },
+}))(props => {
+  const { children, classes, onClose } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
 });
 
 class FileFilters extends Component {
@@ -113,10 +142,12 @@ class FileFilters extends Component {
                     disableBackdropClick
                     disableEscapeKeyDown
                     open={this.state.open}
-                    onClose={this.handleClose}
+                    onClose={this.props.handleClose}
                     fullWidth={true}
                 >
-                    <DialogTitle style={{borderBottom: '1px solid #e0e0e0'}}>Ajouter des filtres de recherche</DialogTitle>
+                  <DialogTitle id="customized-dialog-title" onClose={this.props.handleClose}>
+                    Filtrer la recherche
+                  </DialogTitle>
                     <DialogContent style={{padding: '24px 24px 24px', borderBottom: '1px solid #e0e0e0'}}>
                         <Grid container className={classes.root} spacing={32}>
                             <Grid item xs={12}>

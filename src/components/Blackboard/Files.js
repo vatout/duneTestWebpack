@@ -200,7 +200,7 @@ export class FilesList extends Component {
                     </div>
                     : ''}
 
-                    <FileFilters open={this.state.open}/>
+                    <FileFilters open={this.state.open} handleClose={this.handleClose}/>
 
                     <ShowFile openConfirm={this.state.openFile}
                               idFile={this.state.idFileOpen}
