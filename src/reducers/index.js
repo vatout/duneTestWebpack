@@ -12,6 +12,7 @@ import { welcome } from "./welcomeReducer";
 import { games } from "./gamesReducer";
 import { files } from "./filesReducer";
 import { loader } from "./loaderReducer";
+import { process } from "./processReducer";
 
 import storage from "redux-persist/lib/storage";
 
@@ -25,7 +26,8 @@ const reducers = combineReducers({
   games,
   files,
   loader,
-  tokenSession
+  tokenSession,
+  process
 })
 
 // const rootReducer = (state, action) => {

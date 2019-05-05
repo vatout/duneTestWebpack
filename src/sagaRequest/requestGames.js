@@ -49,6 +49,7 @@ export function* workerGamesInstalled(data){
     const response = yield call(getGamesInstalled, data);
       if (response.status === 200) {
         const installed = response.data.response;
+        console.log("INSTALLED Games: ", installed);
         yield  put({ type: 'GET_GAMES_INSTALLED_SUCCESS', installed: installed});
         yield  put({ type: 'LOADER_END'});
       }
@@ -64,6 +65,7 @@ export function* workerGamesNotInstalled(data){
     const response = yield call(getGamesNotInstalled, data);
       if (response.data.status === 200) {
         const available = response.data.response;
+        console.log("NOTINSTALLED Games: ", available);
         yield  put({ type: 'GET_GAMES_NOT_INSTALLED_SUCCESS', available: available});
         yield  put({ type: 'LOADER_END'});
       }

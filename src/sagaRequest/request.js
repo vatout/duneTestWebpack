@@ -6,6 +6,7 @@ import { workerProfessorInfo } from "./requestProfessor";
 import { workerFiles } from "./requestFiles";
 import { workerGamesInstalled, workerGamesNotInstalled } from "./requestGames";
 import { workerDownloadGame, workerInstallationGame } from "./requestDownloadGame";
+import { workerCreateProcess, workerLaunchProcess, workerEndProcess } from "./requestProcess";
 import { workerClean } from "./requestClean";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -27,5 +28,10 @@ export function* watcherSaga() {
 
   yield takeLatest("DOWNLOAD_GAME", workerDownloadGame);
   yield takeLatest("INSTALLATION_GAME", workerInstallationGame);
+
+  yield takeLatest("PROCESS_START", workerCreateProcess);
+  yield takeLatest("PROCESS_START_SUCCESS", workerLaunchProcess);
+  yield takeLatest("PROCESS_END", workerEndProcess);
+
 
 }

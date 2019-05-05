@@ -7,7 +7,8 @@ const initialState = {
     files: {results: null},
     professor: {professorId: null, nom: null, prenom: null, email: null, error: null, success: null },
     welcome: {connection: true },
-    loader: {loading: false}
+    loader: {loading: false},
+    process: {start: false, end: false, error: false, message: null}
 }
 
 export default initialState;

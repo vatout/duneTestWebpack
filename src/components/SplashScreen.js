@@ -17,7 +17,6 @@ export default class SplashScreen extends Component {
   handleClickCard = () => {
     console.log('handleClick')
     const licence = localStorage.getItem("licence");
-    console.log("licence au démarage", licence);
     if (licence === null) {
       this.setState({redirectInstall: true});
     } else {

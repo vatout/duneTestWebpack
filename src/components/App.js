@@ -35,7 +35,6 @@ class App extends Component {
   }
   render() {
     const licence = localStorage.getItem("licence");
-    console.log("licence au démarage", licence);
     return (
         <main>
 

@@ -30,6 +30,7 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {FilesList} from "../Blackboard/Files";
 
+const { ipcRenderer } = require('electron')
 var isInstalled = null;
 var etat = false;
 var id = null;
@@ -48,19 +49,19 @@ const styles = theme => ({
 });
 
 function getGameDataObject(name, path, info, picPath, creator, categoryLabel, etat, idGame, idType) {
-    return ({
-        creator: creator,
-        picPath: picPath,
-        info: info,
-        path: path,
-        name: name,
-        categoryLabel: categoryLabel,
-        etat: etat,
-        idGame: idGame,
-        idType: idType,
-      available: [],
+  return ({
+    creator: creator,
+    picPath: picPath,
+    info: info,
+    path: path,
+    name: name,
+    categoryLabel: categoryLabel,
+    etat: etat,
+    idGame: idGame,
+    idType: idType,
+    available: [],
 
-    });
+  });
 }
 
 class Library extends Component {
@@ -143,6 +144,12 @@ class Library extends Component {
   download(idGame) {
     id = idGame;
     this.props.installProcess(this.props.token);
+
+  }
+
+  launch(idGame) {
+    this.props.launchProcess(this.props.token);
+
   }
 
   renderListTile() {
@@ -189,7 +196,7 @@ class Library extends Component {
           ))}
         </GridList>
       );
-    }else if (isEmpty && this.props.installed || this.props.available){
+    } else if (isEmpty && this.props.installed || this.props.available){
       return (
         <div className={classes.noResults}>
           <img src={warning} width={200} height={200}/>
@@ -248,7 +255,7 @@ class Library extends Component {
                 </Grid>
 
                 <Grid style={{flex: 0.05, padding: 20}}>
-                  <Button onClick={() => {this.props.download()}}>
+                  <Button onClick={() => {this.launch(1)}}>
                     <img src={require("../../assets/logo_get_app.png")} style={{height:"80px",}} alt="" />
                   </Button>
                 </Grid>
@@ -278,6 +285,7 @@ const mapDispatchToProps = dispatch => {
     getGamesInstalled: (token, nom) => dispatch({ type: "GET_GAMES_INSTALLED", token, nom }),
     getGamesNotInstalled: (token, nom) => dispatch({ type: "GET_GAMES_NOT_INSTALLED", token, nom }),
     installProcess: (token) => dispatch({ type: "DOWNLOAD_GAME", token, id: id }),
+    launchProcess: (token) => dispatch({ type: "PROCESS_START", token, id: id }),
   };
 };
 
