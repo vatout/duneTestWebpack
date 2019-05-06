@@ -15,6 +15,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 
 import { watcherSaga } from "./sagaRequest/request";
 import storage from "redux-persist/lib/storage";
+import { PROCESS_END } from "./actions/actionTypes";
 
 const persistConfig = {
     key: 'root',
@@ -55,3 +56,21 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
+ipcRenderer.on('pong', (event, arg) => {
+  console.log("message received from electron ", arg);
+  var tmp = arg.split('-');
+  var result = {
+    idGp: tmp[0],
+    token: tmp[1],
+    player1: tmp[2],
+    player2: tmp[3],
+    player3: tmp[4],
+    player4: tmp[5],
+    scorePlayer1: tmp[6],
+    scorePlayer2: tmp[7],
+    scorePlayer3: tmp[8],
+    scorePlayer4: tmp[9],
+  }
+  store.dispatch({ type: "PROCESS_END", result });
+});

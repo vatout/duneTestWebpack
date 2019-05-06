@@ -22,7 +22,7 @@ export function process(state = initialState.process, action) {
         case PROCESS_END_FAILURE:
             return { ...state, end: false, error: true, message: action.message };
         case PROCESS_END_SUCCESS:
-            return { ...state, end: false, error: false };
+            return { ...state, end: false, error: false, idGp: null };
         default:
             return state;
     }

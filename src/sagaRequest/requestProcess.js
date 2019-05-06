@@ -4,6 +4,29 @@ import axios from "axios";
 
 const { ipcRenderer } = require('electron')
 
+function endGame(data){
+    console.log("endGame", data);
+    return axios({
+      url: "http://176.31.252.134:7001/api/v1/play/endGame/",
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token: data.token,
+      },
+      data: {
+        'idGP': data.idGp,
+        'player1': data.player1,
+        'player2': data.player2,
+        'player3': data.player3,
+        'player4': data.player4,
+        'scorePlayer1': data.scorePlayer1,
+        'scorePlayer2': data.scorePlayer2,
+        'scorePlayer3': data.scorePlayer3,
+        'scorePlayer4': data.scorePlayer4,
+      }
+    });
+}
+
 // TODO variable en dur à remplacer par const url = "http://176.31.252.134:7001/files/Games/" + data.id;
 // alors ya pas de jeu avec id 2 faudra changer
 function createGame(data){
@@ -23,18 +46,18 @@ function createGame(data){
     });
 }
 
-
 export function* workerEndProcess(data){
   try{
-    console.log("workerInstallGame");
+    console.log("workerEndProcess");
     console.log(data);
-//    const response = yield call(installPackage, data.path);
-      // if (response.data.status === 200) {
-      //     const resultsNot = response.data.response;
-      //     yield  put({ type: 'INSTALLATION_GAME_SUCCESS'});
-      // }
+    const response = yield call(endGame, data.result);
+    console.log("ERROR END PROCESS response ", response);
+    if (response.data.status === 200) {
+      console.log(response);
+      yield  put({ type: 'PROCESS_END_SUCCESS'});
+    }
   } catch (e) {
-    yield put({ type: "INSTALLATION_GAME_FAILURE"});
+    yield put({ type: "PROCESS_END_FAILURE"});
   }
 }
 
@@ -45,11 +68,10 @@ export function* workerCreateProcess(data){
     data.idGame = 2;
     data.idTypeGame = 2;
     const response = yield call(createGame, data);
-    console.log(response);
     if (response.status === 200) {
-       console.log("workerLaunchProcess response", response);
-        const playing = response.data;
-        yield  put({ type: 'PROCESS_START_SUCCESS', idGP: playing.idGP});
+      console.log("workerLaunchProcess response", response);
+      const playing = response.data;
+      yield  put({ type: 'PROCESS_START_SUCCESS', idGP: playing.idGP, token: data.token});
     }
   } catch (e) {
     yield put({ type: "DOWNLOAD_GAME_FAILURE"});
@@ -58,15 +80,11 @@ export function* workerCreateProcess(data){
 
 export function* workerLaunchProcess(data){
   try{
-    console.log("workerLaunchProcess");
-
-//    console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
+    console.log("workerLaunchProcess ", data);
     console.log("IPC message ping");
-    ipcRenderer.send('asynchronous-message', 'ping')
+    var message = data.idGP + "-" + data.token;
+    ipcRenderer.send('asynchronous-message', message)
 
-    ipcRenderer.on('pong', (event, arg) => {
-      console.log("message received from electron ", arg) // prints "pong"
-    });
   } catch (e) {
     yield put({ type: "PROCESS_START_FAILURE", message: response });
 

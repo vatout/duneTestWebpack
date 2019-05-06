@@ -8,13 +8,14 @@ const fs = require('fs')
 const cp = require('child_process');
 const psTree = require('ps-tree');
 const install = require('./src/utils/install')
-console.log("install", install);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let gameWindow;
 let childProcess;
+let idGp;
+let results;
 
 // Keep a reference for dev mode
 let dev = false
@@ -40,12 +41,18 @@ function play() {
       // }
 
       // the *entire* stdout and stderr (buffered)
-      console.log(`stdout: ${stdout}`);
+      console.log('stdout', stdout);
       console.log(`stderr: ${stderr}`);
     });
     gameWindow.loadURL('http://localhost:3000');
+    gameWindow.show();
+    setTimeout(function(){
+       gameWindow.reload();
+     }, 3000);
+
   })
 }
+
 
 function createWindow() {
   // Create the browser window.
@@ -128,19 +135,20 @@ function createWindow() {
   })
 
   mainWindow.loadURL(indexPath)
-  gameWindow.loadURL('http://localhost:3000');
+//  gameWindow.loadURL('http://localhost:3000');
   //ajout de reduxDevTools
   // https://electronjs.org/docs/tutorial/devtools-extension
-  const os = require('os')
-
-  BrowserWindow.addDevToolsExtension(
-    path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
-  )
+  // const os = require('os')
+  //
+  // BrowserWindow.addDevToolsExtension(
+  //   path.join(os.homedir(), '/.config/google-chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')
+  // )
 
   // IPC test
   const { ipcMain } = require('electron')
   ipcMain.on('asynchronous-message', async (event, arg) => {
     console.log(arg) // prints "ping"
+    idGp = arg;
     var ret = await play();
     event.sender.send('asynchronous-reply', 'dataTreated')
   })
@@ -178,7 +186,19 @@ function createWindow() {
     e.preventDefault();
     gameWindow.hide();
     console.log("sending message");
-    mainWindow.webContents.send('pong', 'whoooooooh!')
+
+    ipcMain.on('gameMessage', async (event, arg) => {
+      console.log(arg) // prints "ping"
+      results = arg;
+      event.sender.send('gameMessage', 'dataTreated');
+    })
+    // TODO faut mettre le jeu en webpack putain
+    //
+    var message = "1-2-3-4-5-5-5-5";
+    results = idGp + '-' + message;
+    console.log("RESULTS ", results);
+    mainWindow.webContents.send('pong', results);
+
     if (childProcess != undefined) {
       psTree(childProcess.pid, function (err, children) {
         cp.spawn('kill', ['-9'].concat(children.map(function (p) { return p.PID })));

@@ -122,3 +122,20 @@ exports.installPackage = function(packageFilePath) {
     });
   });
 }
+
+
+exports.writeResult = function(message) {
+  let installPackagesPath = getPackageInstallPath();
+  let configPath = installPackagesPath + "results.json";
+
+  console.log("configPath", configPath)
+  let packageDirs = (fs.existsSync(configPath)) ? JSON.parse(fs.readFileSync(configPath)): [];
+  var tmp = message.split('-');
+  var result = {
+    idGp: tmp[0],
+    token: tmp[1]
+  }
+  console.log(result);
+  packageDirs.push(result);
+  fs.writeFileSync(configPath, JSON.stringify(packageDirs, null, 4));
+}

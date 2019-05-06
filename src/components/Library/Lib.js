@@ -229,7 +229,7 @@ class Library extends Component {
           </div>
           <Grid style={{flex: 1, flexDirection: "column"}}>
             <Grid container style={Theme.Library, {minHeight: "75vh"}}>
-              { this.renderListTile()}
+              { this.renderListTile() }
             </Grid>
             <Grid container style={{flexDirection: "column", paddingBottom: 30, marginBottom: 10}}>
               <Paper>
