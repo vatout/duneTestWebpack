@@ -62,6 +62,9 @@ const styles = {
   },
   dialog: {
     padding: 0
+  },
+  noPad: {
+    padding: '0'
   }
 }
 
@@ -100,7 +103,6 @@ class Test extends Component {
   }
 
   changePageNext = () => {
-
     const canvasStyle = document.getElementsByClassName('react-pdf__Page__canvas');
 
     if (this.state.pageNumber + 1 <= this.state.numPages) {
@@ -130,10 +132,10 @@ class Test extends Component {
 
     if (this.props.mode === "tableau") {
 
-      canvasStyle[0].style['margin-top'] = '64px';
+      canvasStyle[0].style['position'] = 'relative';
 
-      canvasStyle[0].style['width'] = this.state.canvasZoomH;
-      canvasStyle[0].style['height'] = this.state.canvasZoomW;
+      canvasStyle[0].style['width'] = this.state.canvasZoomW;
+      canvasStyle[0].style['height'] = this.state.canvasZoomH;
     }
 
   }
@@ -158,7 +160,7 @@ class Test extends Component {
     const canvasStyle = document.getElementsByClassName('react-pdf__Page__canvas');
 
     canvasStyle[0].style['width'] = "100%";
-    canvasStyle[0].style['height'] =  "100%";
+    canvasStyle[0].style['height'] = window.innerHeight - 64 + 'px';
 
     this.setState({canvasZoomW : canvasStyle[0].style['width']});
     this.setState({canvasZoomH : canvasStyle[0].style['height']});
@@ -298,7 +300,7 @@ class Test extends Component {
               </Toolbar>
             </AppBar>
 
-            <DialogContent>
+            <DialogContent classes={{ root: classes.noPad }}>
 
               <Document
                 file={this.props.url}

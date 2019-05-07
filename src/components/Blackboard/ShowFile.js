@@ -12,6 +12,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Media from './Media';
 import Slide from '@material-ui/core/Slide';
 import PdfViewer from './PdfViewer';
+import ImgViewer from './ImageViewer';
 
 const styles = {
   scrollPaper:{
@@ -78,7 +79,7 @@ class ShowFile extends Component {
 
               {this.state.showFile ?
                 this.props.type === 'IMG' ?
-                  <ImgViewer/>
+                  <ImgViewer file={this.state.showFile} closeFile={this.handleCloseFile} path={this.props.path} title={this.props.title} />
                  : this.props.type === "PDF" ?
                     <PdfViewer mode={"tableau"} url={"http://176.31.252.134:7001/files/fm/" + this.props.path} title={this.props.title} closeFile={this.handleCloseFile}/>
                     : this.props.type === "MP4" ?
