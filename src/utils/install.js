@@ -59,8 +59,8 @@ exports.installPackage = function(packageFilePath) {
     var zip = new zipUtil(packageFilePath);
     var zipEntries = zip.getEntries();
     zip.extractAllTo(packageDir, true);
-    packageDir += "/DuneTestGame"
     console.log("extracted ", packageDir)
+    packageDir += "/DuneTestGame"
 
     // On mettra ça quand on aura tout le temps un duneConfig.json
     //let manifestPath = packageDir + "/duneConfig.json";

@@ -34,7 +34,7 @@ if (process.platform === 'win32') {
 function play() {
   return new Promise(function (resolve, reject) {
     console.log("exec yarn start");
-    childProcess = cp.exec('yarn --cwd /home/artyoum/.DuneGames/installed_packages/invacouleur/ start', (err, stdout, stderr) => {
+    childProcess = cp.exec('yarn --cwd /home/artyoum/.DuneGames/installed_packages/ColorpixelWP/ start', (err, stdout, stderr) => {
       // if (err) {
       //   // node couldn't execute the command
       //   return;
@@ -44,11 +44,6 @@ function play() {
       console.log('stdout', stdout);
       console.log(`stderr: ${stderr}`);
     });
-    gameWindow.loadURL('http://localhost:3000');
-    gameWindow.show();
-    setTimeout(function(){
-       gameWindow.reload();
-     }, 3000);
 
   })
 }
@@ -57,20 +52,23 @@ function play() {
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1624,
-    height: 968,
+    // width: 1624,
+    // height: 968,
     show: false,
+    frame: false,
+    fullscreen: true,
     backgroundColor: '#FEEFC2',
     webPreferences: {
       nodeIntegration: true
     }
   })
   gameWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
+    // width: 1000,
+    // height: 800,
     show: false,
+    frame: false,
+    fullscreen: true,
     backgroundColor: '#FEEFC2',
-    parent: mainWindow,
     webPreferences: {
       nodeIntegration: true
     }
@@ -149,13 +147,19 @@ function createWindow() {
   ipcMain.on('asynchronous-message', async (event, arg) => {
     console.log(arg) // prints "ping"
     idGp = arg;
-    var ret = await play();
+    var ret = play();
+    setTimeout(function(){
+      gameWindow.loadURL('http://localhost:3000');
+      gameWindow.show();
+    }, 4000);
+
     event.sender.send('asynchronous-reply', 'dataTreated')
   })
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
+    gameWindow.hide();
     // Open the DevTools automatically if developing
     if (dev) {
       mainWindow.webContents.openDevTools()
@@ -163,13 +167,23 @@ function createWindow() {
   })
 
   gameWindow.once('ready-to-show', () => {
-    if (childProcess != undefined) {
-      gameWindow.show();
-    }
+    // if (childProcess != undefined) {
+    //   gameWindow.show();
+    // }
     // Open the DevTools automatically if developing
     if (dev) {
       gameWindow.webContents.openDevTools()
     }
+  })
+
+  ipcMain.on('gameEndMessage', async (event, arg) => {
+    console.log(arg) // prints "ping"
+    console.log("sending message");
+    results = idGp + '-' + arg;
+    console.log("RESULTS ", results);
+    mainWindow.webContents.send('pong', results);
+    event.sender.send('gameMessage', 'dataTreated');
+    gameWindow.close();
   })
 
   // Emitted when the window is closed.
@@ -185,19 +199,7 @@ function createWindow() {
     console.log("fenetre sera fermee");
     e.preventDefault();
     gameWindow.hide();
-    console.log("sending message");
 
-    ipcMain.on('gameMessage', async (event, arg) => {
-      console.log(arg) // prints "ping"
-      results = arg;
-      event.sender.send('gameMessage', 'dataTreated');
-    })
-    // TODO faut mettre le jeu en webpack putain
-    //
-    var message = "1-2-3-4-5-5-5-5";
-    results = idGp + '-' + message;
-    console.log("RESULTS ", results);
-    mainWindow.webContents.send('pong', results);
 
     if (childProcess != undefined) {
       psTree(childProcess.pid, function (err, children) {

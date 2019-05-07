@@ -15,7 +15,6 @@ import { persistStore, persistReducer } from 'redux-persist';
 
 import { watcherSaga } from "./sagaRequest/request";
 import storage from "redux-persist/lib/storage";
-import { PROCESS_END } from "./actions/actionTypes";
 
 const persistConfig = {
     key: 'root',
@@ -73,4 +72,5 @@ ipcRenderer.on('pong', (event, arg) => {
     scorePlayer4: tmp[9],
   }
   store.dispatch({ type: "PROCESS_END", result });
+  store.dispatch({ type: "LOADER_END"})
 });

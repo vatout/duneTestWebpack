@@ -84,6 +84,7 @@ export function* workerLaunchProcess(data){
     console.log("IPC message ping");
     var message = data.idGP + "-" + data.token;
     ipcRenderer.send('asynchronous-message', message)
+    yield put({type: 'LOADER_START'});
 
   } catch (e) {
     yield put({ type: "PROCESS_START_FAILURE", message: response });
