@@ -14,6 +14,12 @@ export function games(state = initialState.games, action) {
       return { ...state, error: false, success: true, available: action.available };
     case "GET_GAMES_NOT_INSTALLED_FAILURE":
       return { ...state, error: true, success: false };
+    case "UPDATE_GAMELIST":
+      return { ...state, error: false };
+    case "UPDATE_GAMELIST_SUCCESS":
+      return { ...state, error: false };
+    case "UPDATE_GAMELIST_FAILURE":
+      return { ...state, error: false };
     default:
       return state;
   }

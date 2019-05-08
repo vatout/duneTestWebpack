@@ -16,6 +16,7 @@ let gameWindow;
 let childProcess;
 let idGp;
 let results;
+let token;
 
 // Keep a reference for dev mode
 let dev = false
@@ -34,6 +35,7 @@ if (process.platform === 'win32') {
 function play() {
   return new Promise(function (resolve, reject) {
     console.log("exec yarn start");
+
     childProcess = cp.exec('yarn --cwd /home/artyoum/.DuneGames/installed_packages/ColorpixelWP/ start', (err, stdout, stderr) => {
       // if (err) {
       //   // node couldn't execute the command
@@ -52,22 +54,22 @@ function play() {
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    // width: 1624,
-    // height: 968,
+    width: 1624,
+    height: 968,
     show: false,
-    frame: false,
-    fullscreen: true,
+    //frame: false,
+    //fullscreen: true,
     backgroundColor: '#FEEFC2',
     webPreferences: {
       nodeIntegration: true
     }
   })
   gameWindow = new BrowserWindow({
-    // width: 1000,
-    // height: 800,
+    width: 1000,
+    height: 800,
     show: false,
-    frame: false,
-    fullscreen: true,
+  //  frame: false,
+  //  fullscreen: true,
     backgroundColor: '#FEEFC2',
     webPreferences: {
       nodeIntegration: true
@@ -100,8 +102,12 @@ function createWindow() {
     if (state === 'completed') {
       console.log('Download successfully');
       console.log(install);
-      install.installPackage(fullPath);
+      install.installPackage(fullPath, fileName);
+      var myString = fileName.replace(/\D/g,'');
+      myString = myString + '-' + token;
+      mainWindow.webContents.send('downloadGood', myString);
     } else {
+      mainWindow.webContents.send('download', "Une erreure est survenue pendant le téléchargement, veuillez recommencer s'il vous plait");
       console.log(`Download failed: ${state}`)
     }
   })
@@ -151,7 +157,7 @@ function createWindow() {
     setTimeout(function(){
       gameWindow.loadURL('http://localhost:3000');
       gameWindow.show();
-    }, 4000);
+    }, 5000);
 
     event.sender.send('asynchronous-reply', 'dataTreated')
   })

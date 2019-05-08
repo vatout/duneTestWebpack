@@ -11,6 +11,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Button from '@material-ui/core/Button';
 
 import IconButton from '@material-ui/core/IconButton';
+import Refresh from '@material-ui/icons/Refresh';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import InfoIcon from '@material-ui/icons/Info';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleOutline';
@@ -34,6 +35,7 @@ const { ipcRenderer } = require('electron')
 var isInstalled = null;
 var etat = false;
 var id = null;
+var idType = null;
 
 const styles = theme => ({
   noResults:{
@@ -141,15 +143,27 @@ class Library extends Component {
     }
   }
 
+  showInfo(idGame, idTypeGame) {
+    if (this.state.installedGames) {
+      this.launch(idGame, idTypeGame);
+    } else if (this.state.availableGames) {
+      this.download(idGame);
+    }
+  }
+
   download(idGame) {
     id = idGame;
     this.props.installProcess(this.props.token);
 
   }
 
-  launch(idGame) {
-    this.props.launchProcess(this.props.token);
+  launch(idGame, idTypeGame) {
+    idType = idTypeGame
+    this.props.launchProcess(this.props.token, idGame, idTypeGame);
 
+  }
+  refresh = () => {
+    window.location.reload();
   }
 
   renderListTile() {
@@ -164,7 +178,7 @@ class Library extends Component {
         isEmpty = true;
       icon = (
         <PlayArrowIcon />
-      )
+      );
     } else {
       if (this.state.availableGames)
         renderList = this.state.availableGames;
@@ -185,7 +199,7 @@ class Library extends Component {
                 subtitle={<span>by: {tile.creator}</span>}
                 actionIcon={
                   <IconButton style={Theme.icon} onClick={() => {
-                    this.download(tile.idGame)
+                    this.showInfo(tile.idGame, tile.idTypeGame)
                   }}>
                     {icon}
                   </IconButton>
@@ -259,6 +273,11 @@ class Library extends Component {
                     <img src={require("../../assets/logo_get_app.png")} style={{height:"80px",}} alt="" />
                   </Button>
                 </Grid>
+                <Grid style={{flex: 0.05}}>
+                  <Button color="secondary" onClick={this.refresh}>
+                      <Refresh style={{width: '3em', height: '3em'}}/>
+                  </Button>
+                </Grid>
               </Grid>
 
             </Grid>
@@ -285,7 +304,7 @@ const mapDispatchToProps = dispatch => {
     getGamesInstalled: (token, nom) => dispatch({ type: "GET_GAMES_INSTALLED", token, nom }),
     getGamesNotInstalled: (token, nom) => dispatch({ type: "GET_GAMES_NOT_INSTALLED", token, nom }),
     installProcess: (token) => dispatch({ type: "DOWNLOAD_GAME", token, id: id }),
-    launchProcess: (token) => dispatch({ type: "PROCESS_START", token, id: id }),
+    launchProcess: (token) => dispatch({ type: "PROCESS_START", token, id, idType }),
   };
 };
 

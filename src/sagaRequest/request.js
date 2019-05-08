@@ -4,7 +4,7 @@ import { workerLicence, workerLicenceRegister } from "./requestLicence";
 import { workerTokenCreate, workerTokenDelete, workerTokenValidate } from "./requestTokenConnect";
 import { workerProfessorInfo } from "./requestProfessor";
 import { workerFiles } from "./requestFiles";
-import { workerGamesInstalled, workerGamesNotInstalled } from "./requestGames";
+import { workerGamesInstalled, workerGamesNotInstalled, workerUpdateGameList, workerRefreshGames } from "./requestGames";
 import { workerDownloadGame, workerInstallationGame } from "./requestDownloadGame";
 import { workerCreateProcess, workerLaunchProcess, workerEndProcess } from "./requestProcess";
 import { workerClean } from "./requestClean";
@@ -32,6 +32,7 @@ export function* watcherSaga() {
   yield takeLatest("PROCESS_START", workerCreateProcess);
   yield takeLatest("PROCESS_START_SUCCESS", workerLaunchProcess);
   yield takeLatest("PROCESS_END", workerEndProcess);
-
+  yield takeLatest("UPDATE_GAMELIST", workerUpdateGameList);
+  yield takeLatest("REFRESH_GAMES", workerRefreshGames);
 
 }

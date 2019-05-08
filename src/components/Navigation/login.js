@@ -140,11 +140,6 @@ class Login extends Component {
                     <Button onClick={this.handleClose} size="large" color="secondary">
                       Fermer
                     </Button>
-                    <Button  size="large" color="secondary">
-                      <Link to="menu" onClick={this.handleClose}>
-                        Menu
-                      </Link>
-                    </Button>
                   </DialogActions>
                 </Dialog>
                 <Grid item xs={12}>

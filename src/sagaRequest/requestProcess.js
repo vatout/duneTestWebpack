@@ -65,8 +65,6 @@ export function* workerCreateProcess(data){
   try{
     console.log("workerCreateProcess");
     data.idClasse = 1;
-    data.idGame = 2;
-    data.idTypeGame = 2;
     const response = yield call(createGame, data);
     if (response.status === 200) {
       console.log("workerLaunchProcess response", response);

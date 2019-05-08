@@ -1,5 +1,7 @@
 const fs = require('fs')
 const zipUtil = require('adm-zip')
+
+let packageDir;
 // module.exports = {
 // };
 
@@ -49,22 +51,21 @@ function getInstalledPackages() {
   return installPackageInfos;
 }
 
-exports.installPackage = function(packageFilePath) {
+exports.installPackage = function(packageFilePath, dirName) {
   console.log("installPackage ", packageFilePath);
   return new Promise(function (resolve, reject) {
     let installPackagesPath = getPackageInstallPath();
-    let dirName = "pak-" + (new Date().getTime());
-    let packageDir = installPackagesPath + dirName;
+//    let dirName = "pak-" + (new Date().getTime());
+    packageDir = installPackagesPath + dirName;
 
     var zip = new zipUtil(packageFilePath);
     var zipEntries = zip.getEntries();
     zip.extractAllTo(packageDir, true);
     console.log("extracted ", packageDir)
-    packageDir += "/DuneTestGame"
 
     // On mettra ça quand on aura tout le temps un duneConfig.json
-    //let manifestPath = packageDir + "/duneConfig.json";
-    let manifestPath = "/home/artyoum/.DuneGames/installed_packages/DuneTestGame/duneConfig.json";
+    let manifestPath = packageDir + "/duneConfig.json";
+    //let manifestPath = "/home/artyoum/.DuneGames/installed_packages/DuneTestGame/duneConfig.json";
 
     if (!fs.existsSync(manifestPath)) {
       reject('duneConfig.json not found');
@@ -104,18 +105,21 @@ exports.installPackage = function(packageFilePath) {
     let configPath = installPackagesPath + "packages.json";
     console.log("configPath", configPath)
     let packageDirs = (fs.existsSync(configPath)) ? JSON.parse(fs.readFileSync(configPath)): [];
+    let obj = {
+      path: packageDir,
+      name: dirName,
+    }
     packageDirs.push(dirName);
     fs.writeFileSync(configPath, JSON.stringify(packageDirs, null, 4));
     resolve(manifestPath);
   }).then((response) => {
     console.log("exec yarn install");
     const { exec } = require('child_process');
-    childProcess = exec('yarn --cwd /home/artyoum/.DuneGames/installed_packages/DuneTestGame/', (err, stdout, stderr) => {
-      // if (err) {
-      //   // node couldn't execute the command
-      //   return;
-      // }
-
+    childProcess = exec('yarn --cwd '+ packageDir, (err, stdout, stderr) => {
+      if (err) {
+        mainWindow.webContents.send('download', "Une erreure est survenue pendant l'installation, veuillez recommencer s'il vous plait");
+        return;
+      }
       // the *entire* stdout and stderr (buffered)
       console.log(`stdout: ${stdout}`);
       console.log(`stderr: ${stderr}`);

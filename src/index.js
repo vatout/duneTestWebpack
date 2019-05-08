@@ -74,3 +74,15 @@ ipcRenderer.on('pong', (event, arg) => {
   store.dispatch({ type: "PROCESS_END", result });
   store.dispatch({ type: "LOADER_END"})
 });
+
+ipcRenderer.on('downloadGood', (event, arg) => {
+  console.log("download Good ", arg);
+  console.log("store", store);
+  var tmp = arg.split('-');
+  var result = {
+    idGp: tmp[0],
+    token: tmp[1]
+  }
+  store.dispatch({ type: "UPDATE_GAMELIST", result });
+  store.dispatch({ type: "LOADER_END"})
+});
