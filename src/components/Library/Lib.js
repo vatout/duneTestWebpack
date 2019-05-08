@@ -144,6 +144,7 @@ class Library extends Component {
   }
 
   showInfo(idGame, idTypeGame) {
+    console.log("showInfo ", idGame, idTypeGame);
     if (this.state.installedGames) {
       this.launch(idGame, idTypeGame);
     } else if (this.state.availableGames) {
@@ -159,6 +160,7 @@ class Library extends Component {
 
   launch(idGame, idTypeGame) {
     idType = idTypeGame
+    id = idGame
     this.props.launchProcess(this.props.token, idGame, idTypeGame);
 
   }
@@ -199,7 +201,7 @@ class Library extends Component {
                 subtitle={<span>by: {tile.creator}</span>}
                 actionIcon={
                   <IconButton style={Theme.icon} onClick={() => {
-                    this.showInfo(tile.idGame, tile.idTypeGame)
+                    this.showInfo(tile.idGame, tile.idType)
                   }}>
                     {icon}
                   </IconButton>

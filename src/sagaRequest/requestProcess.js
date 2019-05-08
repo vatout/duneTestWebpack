@@ -1,4 +1,4 @@
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import initialState from '../reducers/initialState';
 import axios from "axios";
 
@@ -40,7 +40,7 @@ function createGame(data){
       },
       data: {
         'idClasse': data.idClasse,
-        'idGame': data.idGame,
+        'idGame': data.id,
         'idTypeGame': data.idTypeGame,
       }
     });
@@ -50,6 +50,8 @@ export function* workerEndProcess(data){
   try{
     console.log("workerEndProcess");
     console.log(data);
+    const getToken = state => state.tokenSession.tokenSession;
+    data.result.token = yield select(getToken);
     const response = yield call(endGame, data.result);
     console.log("ERROR END PROCESS response ", response);
     if (response.data.status === 200) {
@@ -63,13 +65,13 @@ export function* workerEndProcess(data){
 
 export function* workerCreateProcess(data){
   try{
-    console.log("workerCreateProcess");
+    console.log("workerCreateProcess", data);
     data.idClasse = 1;
     const response = yield call(createGame, data);
     if (response.status === 200) {
       console.log("workerLaunchProcess response", response);
-      const playing = response.data;
-      yield  put({ type: 'PROCESS_START_SUCCESS', idGP: playing.idGP, token: data.token});
+      data.idGP = response.data.idGP;
+      yield  put({ type: 'PROCESS_START_SUCCESS', data});
     }
   } catch (e) {
     yield put({ type: "DOWNLOAD_GAME_FAILURE"});
@@ -80,7 +82,7 @@ export function* workerLaunchProcess(data){
   try{
     console.log("workerLaunchProcess ", data);
     console.log("IPC message ping");
-    var message = data.idGP + "-" + data.token;
+    var message = data.data.idGP + "-" + data.data.id;
     ipcRenderer.send('asynchronous-message', message)
     yield put({type: 'LOADER_START'});
 

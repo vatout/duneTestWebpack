@@ -24,7 +24,7 @@ function getStoragePath() {
  *
  * @return {string}
  */
-function getPackageInstallPath() {
+exports.getPackageInstallPath = function () {
   let storagePath = getStoragePath();
   let installPackagesPath = storagePath + "installed_packages/";
   if (!fs.existsSync(installPackagesPath)) {

@@ -61,15 +61,14 @@ ipcRenderer.on('pong', (event, arg) => {
   var tmp = arg.split('-');
   var result = {
     idGp: tmp[0],
-    token: tmp[1],
-    player1: tmp[2],
-    player2: tmp[3],
-    player3: tmp[4],
-    player4: tmp[5],
-    scorePlayer1: tmp[6],
-    scorePlayer2: tmp[7],
-    scorePlayer3: tmp[8],
-    scorePlayer4: tmp[9],
+    player1: tmp[1],
+    player2: tmp[2],
+    player3: tmp[3],
+    player4: tmp[4],
+    scorePlayer1: tmp[5],
+    scorePlayer2: tmp[6],
+    scorePlayer3: tmp[7],
+    scorePlayer4: tmp[8],
   }
   store.dispatch({ type: "PROCESS_END", result });
   store.dispatch({ type: "LOADER_END"})

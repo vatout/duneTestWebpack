@@ -15,6 +15,7 @@ let mainWindow;
 let gameWindow;
 let childProcess;
 let idGp;
+let idGame;
 let results;
 let token;
 
@@ -35,8 +36,10 @@ if (process.platform === 'win32') {
 function play() {
   return new Promise(function (resolve, reject) {
     console.log("exec yarn start");
-
-    childProcess = cp.exec('yarn --cwd /home/artyoum/.DuneGames/installed_packages/ColorpixelWP/ start', (err, stdout, stderr) => {
+    var path = install.getPackageInstallPath();
+    path = path + "duneGame"+ idGame+".zip";
+    console.log("PATH", path)
+    childProcess = cp.exec('yarn --cwd ' + path + ' start', (err, stdout, stderr) => {
       // if (err) {
       //   // node couldn't execute the command
       //   return;
@@ -152,7 +155,9 @@ function createWindow() {
   const { ipcMain } = require('electron')
   ipcMain.on('asynchronous-message', async (event, arg) => {
     console.log(arg) // prints "ping"
-    idGp = arg;
+    var tmp = arg.split('-');
+    idGp = tmp[0];
+    idGame = tmp[1];
     var ret = play();
     setTimeout(function(){
       gameWindow.loadURL('http://localhost:3000');
@@ -205,7 +210,9 @@ function createWindow() {
     console.log("fenetre sera fermee");
     e.preventDefault();
     gameWindow.hide();
-
+    results = idGp + '-' + "5-5-5-5-5-5-5-5";
+    console.log("RESULTS ", results);
+    mainWindow.webContents.send('pong', results);
 
     if (childProcess != undefined) {
       psTree(childProcess.pid, function (err, children) {
