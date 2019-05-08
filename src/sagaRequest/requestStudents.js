@@ -1,23 +1,49 @@
 import axios from "axios";
+import { call, put, select } from "redux-saga/effects";
 
-export function requestStudentsFromClassroom(classroomid, updateHandler) {
-    axios.post("http://176.31.252.134:7001/api/v1/eleves/byClasse/", {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            idClasse:classroomid,
-            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDI5ODY0NzYsImV4cCI6MTg1ODM0NjQ3Nn0.1-AzcidDuMfnI9c36ZX2Kp_SpU0fwwh1AtX2LNkALQk'
-    }).then(function (response, ) {
-        if (response == null || response.data == null || response.data.error != null)
-            return;
-        updateHandler(response.data.response.map(value => {
-            return (
-                {
-                    id:value.idEleve,
-                    name:value.nomEleve,
-                    firstname:value.prenomEleve,
-                    profilePicture: value.picPath,
-                }
-            );
-        }));
-    });
+//Get all students from a request with filter (from a classe or from all the school)
+export function get_all_students_api(datas){
+
+  const datasTosend = new FormData();
+  datasTosend.append('idClasse', datas.idClasse);
+
+  datas.search = datas.search == undefined ? '' : datas.search;
+
+  datasTosend.append('search', datas.search);
+
+  var url = datas.idClasse == 0 ? 'http://176.31.252.134:7001/api/v1/trombi/' : 'http://176.31.252.134:7001/api/v1/trombi/byClasse';
+
+  return axios({
+    method: 'post',
+    url: url,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      token: datas.token
+    },
+    data: datasTosend
+  });
+}
+
+//Get all student of a user
+export function* get_all_students(datas){
+  console.log("GET ALL STUDENTS");
+
+  try{
+
+    const response = yield call(get_all_students_api, datas);
+
+    const content = JSON.stringify(response.data.response);
+
+    if (response.data.status === 200){
+      yield put({type: "GET_STUDENTS_SUCCESS", content: content});
+    }else{
+      yield put({type: "GET_STUDENTS_ERROR"});
+    }
+
+  }catch (e) {
+
+    console.log("ERREUR !!!!!! ", e);
+
+  }
 }

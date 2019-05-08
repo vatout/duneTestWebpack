@@ -30,6 +30,7 @@ import Typography from "@material-ui/core/Typography";
 import MuiDialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {FilesList} from "../Blackboard/Files";
+import SelectStudents from '../Blackboard/SelectStudents';
 
 const { ipcRenderer } = require('electron')
 var isInstalled = null;
@@ -74,8 +75,17 @@ class Library extends Component {
       availableGames: [],
       loadOnce: true,
       tabs: 0,
-      open: false
+      open: false,
+      selectStudentsOpen: false,
+      toLaunch: false,
+      info: false,
+      idGame: null,
+      idTypeGame: null
     }
+  }
+
+  LaunchBool = () =>{
+    this.setState({toLaunch: true});
   }
 
   componentDidMount = () => {
@@ -143,8 +153,8 @@ class Library extends Component {
     }
   }
 
-  showInfo(idGame, idTypeGame) {
-    if (this.state.installedGames) {
+  showInfo(idGame, idTypeGame, content) {
+    if (true) {
       this.launch(idGame, idTypeGame);
     } else if (this.state.availableGames) {
       this.download(idGame);
@@ -158,7 +168,7 @@ class Library extends Component {
   }
 
   launch(idGame, idTypeGame) {
-    idType = idTypeGame
+    idType = idTypeGame;
     this.props.launchProcess(this.props.token, idGame, idTypeGame);
 
   }
@@ -199,7 +209,7 @@ class Library extends Component {
                 subtitle={<span>by: {tile.creator}</span>}
                 actionIcon={
                   <IconButton style={Theme.icon} onClick={() => {
-                    this.showInfo(tile.idGame, tile.idTypeGame)
+                    this.setState({selectStudentsOpen: true, info: this.state.tabs === 0, idGame: tile.idGame, idTypeGame: tile.idType})
                   }}>
                     {icon}
                   </IconButton>
@@ -285,6 +295,11 @@ class Library extends Component {
 
           </Grid>
           <LibraryFilter open={this.state.open} mode={this.state.tabs} handleOpened={this.handleOpened}/>
+          <SelectStudents open={this.state.selectStudentsOpen}
+                          launch={this.showInfo}
+                          toRender={this.state.info ? "info" : "launch"} maxPlayers={4}
+                          idGame={this.state.idGame}
+                        idTypeGame={this.state.idTypeGame}/>
         </div>
       );
   }
