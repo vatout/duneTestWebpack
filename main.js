@@ -16,6 +16,7 @@ let gameWindow;
 let childProcess;
 let idGp;
 let idGame;
+let players;
 let results;
 let token;
 
@@ -36,23 +37,48 @@ if (process.platform === 'win32') {
 }
 
 function play() {
-  return new Promise(function (resolve, reject) {
-    console.log("exec yarn start");
-    var path = install.getPackageInstallPath();
-    path = path + "duneGame"+ idGame+".zip";
-    console.log("PATH", path)
-    childProcess = cp.exec('yarn --cwd ' + path + ' start', (err, stdout, stderr) => {
-      // if (err) {
-      //   // node couldn't execute the command
-      //   return;
-      // }
+  console.log("function play");
+  var spawn = require('child_process').spawn;
+  let path = install.getPackageInstallPath();
+  path = path + "duneGame"+ idGame+".zip";
+  console.log("PATH", path);
+  // var cmd = 'yarn --cwd ' + path + ' start';
+  childProcess = spawn('yarn', ['start'], { cwd: path});
+  childProcess.stdout.on('data', function (data) {
+    var log = data.toString();
+    console.log('stdout: ' + log);
+    if (log.includes("Compiled")) {
+      gameWindow.loadURL('http://localhost:3000');
+      gameWindow.webContents.send('studentList', players);
+      gameWindow.show();
+    }
+  });
+  console.log(childProcess);
+  childProcess.stderr.on('data', function (data) {
+    console.log('stderr: ' + data.toString());
+  });
 
-      // the *entire* stdout and stderr (buffered)
-      console.log('stdout', stdout);
-      console.log(`stderr: ${stderr}`);
-    });
+  // childProcess.on('exit', function (code) {
+  //   console.log('child process exited with code ' + code.toString());
+  // });
 
-  })
+  // return new Promise(function (resolve, reject) {
+  //   console.log("exec yarn start");
+  //   var path = install.getPackageInstallPath();
+  //   path = path + "duneGame"+ idGame+".zip";
+  //   console.log("PATH", path)
+  //   childProcess = cp.exec('yarn --cwd ' + path + ' start', (err, stdout, stderr) => {
+  //     // if (err) {
+  //     //   // node couldn't execute the command
+  //     //   return;
+  //     // }
+  //
+  //     // the *entire* stdout and stderr (buffered)
+  //     console.log('stdout', stdout);
+  //     console.log(`stderr: ${stderr}`);
+  //   });
+  //
+  // })
 }
 
 
@@ -158,15 +184,14 @@ function createWindow() {
   const { ipcMain } = require('electron')
   ipcMain.on('asynchronous-message', async (event, arg) => {
     console.log("message in electron from react on game launch ", arg) // prints "ping"
-    var tmp = arg.split('-');
-    idGp = tmp[0];
-    idGame = tmp[1];
+    idGp = arg.idGP;
+    idGame = arg.id
+    players = arg.players;
     var ret = play();
-    setTimeout(function(){
-      gameWindow.loadURL('http://localhost:3000');
-      gameWindow.reload();
-    }, 5000);
-    gameWindow.show();
+    // setTimeout(function(){
+    //   gameWindow.loadURL('http://localhost:3000');
+    //   gameWindow.show();
+    // }, 5000);
     event.sender.send('asynchronous-reply', 'dataTreated')
   })
 
@@ -193,7 +218,10 @@ function createWindow() {
   ipcMain.on('gameEndMessage', async (event, arg) => {
     console.log(arg) // prints "ping"
     console.log("sending message");
-    results = idGp + '-' + arg;
+    results = {
+      idGp: idGp,
+      playerScore: arg
+    }
     console.log("RESULTS ", results);
     mainWindow.webContents.send('pong', results);
     event.sender.send('gameMessage', 'dataTreated');

@@ -5,12 +5,12 @@ import axios from "axios";
 import FileSaver from 'file-saver';
 import AdmZip from 'adm-zip';
 
-// TODO variable en dur à remplacer par const url = "http://176.31.252.134:7001/files/Games/" + data.id;
+// TODO variable en dur à remplacer par const url = "http://176.31.252.134:9001/files/Games/" + data.id;
 // alors ya pas de jeu avec id 2 faudra changer
 function getGame(data){
     console.log("getGame", data);
     return axios({
-      url: "http://176.31.252.134:7001/files/Games/" + data.id,
+      url: "http://176.31.252.134:9001/files/Games/" + data.id,
       method: 'GET',
       responseType: 'blob',
       headers: {

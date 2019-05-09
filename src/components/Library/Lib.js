@@ -120,7 +120,7 @@ class Library extends Component {
       let tmp = [], game= {};
       if (result.length > 0) {
         for (let i = 0; i < result.length; i++) {
-          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:7001/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
+          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:9001/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
           tmp.push(game);
         }
       }
@@ -133,7 +133,7 @@ class Library extends Component {
       let result = this.props.available;
       let tmp = [], game= {};
       for (let i = 0; i < result.length; i++) {
-        game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:7001/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
+        game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:9001/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
         tmp.push(game);
       }
       this.setState({availableGames: tmp});

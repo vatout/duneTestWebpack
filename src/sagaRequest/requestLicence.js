@@ -15,14 +15,14 @@ function checkStorage() {
 }
 
 // fetchTokenRequest: fonction execute la requete
-//  dev: port 7001
+//  dev: port 9001
 //  prod: port 9001
 //  return: response promise object
 function fetchIdTable(action) {
   console.log("fetchTokenRequest ", action);
   return axios({
     method: 'POST',
-    url: "http://176.31.252.134:7001/api/v1/cnxTable/install",
+    url: "http://176.31.252.134:9001/api/v1/cnxTable/install",
     headers: {
       'Content-Type': 'application/json',
     },

@@ -4,7 +4,7 @@ import { call, put } from "redux-saga/effects";
 
 function getUserById(data){
 
-    const url = "http://176.31.252.134:7001/api/v1/users/infos/" + data.idProf;
+    const url = "http://176.31.252.134:9001/api/v1/users/infos/" + data.idProf;
     return axios.get(url, {
         headers: {
             Accept: 'application/json',

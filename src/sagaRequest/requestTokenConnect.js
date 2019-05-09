@@ -7,7 +7,7 @@ import axios from "axios";
 function fetchTocken(action) {
   return axios({
     method: 'POST',
-    url: "http://176.31.252.134:7001/api/v1/cnxTable/genToken",
+    url: "http://176.31.252.134:9001/api/v1/cnxTable/genToken",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -23,7 +23,7 @@ function fetchTocken(action) {
 function fetchTockenValidate(action) {
   return axios({
     method: 'POST',
-    url: "http://176.31.252.134:7001/api/v1/cnxTable/verifToken",
+    url: "http://176.31.252.134:9001/api/v1/cnxTable/verifToken",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -39,7 +39,7 @@ function fetchTockenValidate(action) {
 function deleteTocken(action) {
   return axios({
     method: 'POST',
-    url: "http://176.31.252.134:7001/api/v1/cnxTable/delToken",
+    url: "http://176.31.252.134:9001/api/v1/cnxTable/delToken",
     headers: {
       'Content-Type': 'application/json',
     },

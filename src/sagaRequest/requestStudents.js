@@ -11,7 +11,7 @@ export function get_all_students_api(datas){
 
   datasTosend.append('search', datas.search);
 
-  var url = datas.idClasse == 0 ? 'http://176.31.252.134:7001/api/v1/trombi/' : 'http://176.31.252.134:7001/api/v1/trombi/byClasse';
+  var url = datas.idClasse == 0 ? 'http://176.31.252.134:9001/api/v1/trombi/' : 'http://176.31.252.134:9001/api/v1/trombi/byClasse';
 
   return axios({
     method: 'post',

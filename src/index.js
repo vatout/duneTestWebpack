@@ -58,13 +58,12 @@ ReactDOM.render(
 
 ipcRenderer.on('pong', (event, arg) => {
   console.log("message received from electron ", arg);
-  var tmp = arg.split('-');
   var result = {
-    idGp: tmp[0],
-    scorePlayer1: tmp[1],
-    scorePlayer2: tmp[2],
-    scorePlayer3: tmp[3],
-    scorePlayer4: tmp[4],
+    idGp: arg.idGp,
+    scorePlayer1: arg.playerScore.playerScore1 *3,
+    scorePlayer2: arg.playerScore.playerScore2 *3,
+    scorePlayer3: arg.playerScore.playerScore3 *3,
+    scorePlayer4: arg.playerScore.playerScore4 *3,
   }
   store.dispatch({ type: "PROCESS_END", result });
   store.dispatch({ type: "LOADER_END"})
@@ -72,7 +71,6 @@ ipcRenderer.on('pong', (event, arg) => {
 
 ipcRenderer.on('downloadGood', (event, arg) => {
   console.log("download Good ", arg);
-  console.log("store", store);
   var tmp = arg.split('-');
   var result = {
     idGp: tmp[0],

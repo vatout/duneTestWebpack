@@ -13,7 +13,7 @@ function getFiles(datas){
 
     return axios({
         method: 'post',
-        url: 'http://176.31.252.134:7001/api/v1/filesManager/getAll',
+        url: 'http://176.31.252.134:9001/api/v1/filesManager/getAll',
         headers: {
             token: datas.token
         },

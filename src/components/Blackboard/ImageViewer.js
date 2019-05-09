@@ -100,7 +100,7 @@ class ImageViewer extends Component {
                   </Toolbar>
                 </AppBar>
                 <DialogContent  style={{backgroundColor: 'rgb(254, 239, 194)', textAlign: 'center', width: "100%", height:"100%", display: 'block', position: 'relative'}} classes={{ root: classes.noPad }}>
-                    <img className={classes.test} src={"http://176.31.252.134:7001/files/fm/" + this.props.path} style={{width: this.state.zoom + '%'}}/>
+                    <img className={classes.test} src={"http://176.31.252.134:9001/files/fm/" + this.props.path} style={{width: this.state.zoom + '%'}}/>
                 </DialogContent>
               </Dialog>
             </div>

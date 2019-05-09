@@ -7,7 +7,7 @@ const { ipcRenderer } = require('electron')
 function endGame(data){
     console.log("endGame", data);
     return axios({
-      url: "http://176.31.252.134:7001/api/v1/play/endGame/",
+      url: "http://176.31.252.134:9001/api/v1/play/endGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +27,12 @@ function endGame(data){
     });
 }
 
-// TODO variable en dur à remplacer par const url = "http://176.31.252.134:7001/files/Games/" + data.id;
+// TODO variable en dur à remplacer par const url = "http://176.31.252.134:9001/files/Games/" + data.id;
 // alors ya pas de jeu avec id 2 faudra changer
 function createGame(data){
     console.log("createGame", data);
     return axios({
-      url: "http://176.31.252.134:7001/api/v1/play/createGame/",
+      url: "http://176.31.252.134:9001/api/v1/play/createGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,11 @@ export function* workerLaunchProcess(data){
   try{
     console.log("workerLaunchProcess ", data);
     console.log("IPC message ping");
-    var message = data.idGP + "-" + data.data.id;
+    var message = {
+      idGP: data.idGP,
+      id: data.data.id,
+      players: data.players
+    }
     console.log(message);
     ipcRenderer.send('asynchronous-message', message)
     yield put({type: 'LOADER_START'});

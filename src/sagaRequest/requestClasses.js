@@ -9,7 +9,7 @@ export function get_user_classes_api(datas) {
 
   return axios({
     method: 'get',
-    url: 'http://176.31.252.134:7001/api/v1/trombi/classes',
+    url: 'http://176.31.252.134:9001/api/v1/trombi/classes',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
