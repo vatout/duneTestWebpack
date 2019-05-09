@@ -34,7 +34,7 @@ exports.getPackageInstallPath = function () {
 }
 
 function getInstalledPackages() {
-  let installPackagesPath = getPackageInstallPath();
+  let installPackagesPath = exports.getPackageInstallPath();
 
   let configPath = installPackagesPath + "packages.json";
   if (!fs.existsSync(configPath)) {
@@ -54,7 +54,7 @@ function getInstalledPackages() {
 exports.installPackage = function(packageFilePath, dirName) {
   console.log("installPackage ", packageFilePath);
   return new Promise(function (resolve, reject) {
-    let installPackagesPath = getPackageInstallPath();
+    let installPackagesPath = exports.getPackageInstallPath();
 //    let dirName = "pak-" + (new Date().getTime());
     packageDir = installPackagesPath + dirName;
 
@@ -129,7 +129,7 @@ exports.installPackage = function(packageFilePath, dirName) {
 
 
 exports.writeResult = function(message) {
-  let installPackagesPath = getPackageInstallPath();
+  let installPackagesPath = exports.getPackageInstallPath();
   let configPath = installPackagesPath + "results.json";
 
   console.log("configPath", configPath)

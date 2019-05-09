@@ -10,7 +10,7 @@ import AdmZip from 'adm-zip';
 function getGame(data){
     console.log("getGame", data);
     return axios({
-      url: "http://176.31.252.134:7001/files/Games/2",
+      url: "http://176.31.252.134:7001/files/Games/" + data.id,
       method: 'GET',
       responseType: 'blob',
       headers: {

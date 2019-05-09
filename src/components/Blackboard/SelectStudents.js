@@ -38,13 +38,9 @@ class selectStudents extends Component{
 
 
   componentWillMount(){
-
     const { getStudents, token } = this.props;
-
     getStudents(token, this.props.typeUser, this.props.idUser, 0, '');
-
     this.props.getClasses(token, this.props.typeUser, this.props.idUser);
-
   }
 
   changeChoosen = (ch) =>{
@@ -57,11 +53,8 @@ class selectStudents extends Component{
 
   renderClasses() {
     const { classesS } = this.props;
-
     const classes = [];
-
     let i = 0;
-
     let classesLabel = {
       1: 'Petite section',
       2: 'Moyenne Section',
@@ -75,14 +68,10 @@ class selectStudents extends Component{
       10: '5e',
       11: '4e',
       12: '3e'};
-
-
     classes.push(
       <MenuItem id={0} key={i} value={0}>Toutes</MenuItem>
     );
-
     if (this.props.classesS !== null) {
-
       for (const data in classesS) {
         classes.push(
           <MenuItem key={classesS[data].idClasse} value={classesS[data].idClasse}>
@@ -97,7 +86,6 @@ class selectStudents extends Component{
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-
     this.props.getStudents(this.props.token, this.props.typeUser, this.props.idUser, event.target.value);
   };
 
@@ -142,7 +130,10 @@ class selectStudents extends Component{
                   fullWidth={true}
                   maxWidth='lg'>
             <div style={{textAlign: 'center'}}>
-              BLABLABLA INFO DU JEU
+              Description du jeu
+              <Button onClick={this.props.launch.bind(this, this.props.idGame, this.props.idTypeGame, null)} color="secondary">
+                Télécharger le jeu
+              </Button>
             </div>
           </Dialog>
         </div>

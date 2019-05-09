@@ -44,8 +44,7 @@ class Login extends Component {
       const diff = 4;
       this.setState({ completed: Math.min(completed - diff, 100) });
       if (this.props.professorId == null && completed !== 111) {
-        tokenConnect = this.props.tokenConnect;
-        this.props.onRequestAlways();
+        this.props.onRequestAlways(this.props.tokenConnect);
       } else if (this.props.professorId != null) {
         completed = 111;
         this.setState({goAway: true});
@@ -62,15 +61,13 @@ class Login extends Component {
   handleClose = () => {
     this.setState({ open: false });
     clearInterval(this.timer);
-    tokenConnect = this.props.tokenConnect;
-    this.props.onRequestDelete();
+    this.props.onRequestDelete(this.props.tokenConnect);
 
   };
   handleClickOpenError = () => {
     clearInterval(this.timer);
     this.setState({ errorOpen: false, completed: 110 });
-    tokenConnect = this.props.tokenConnect;
-    this.props.onRequestDelete();
+    this.props.onRequestDelete(this.props.tokenConnect);
     this.props.onRequestTocken();
     this.timer = setInterval(this.progress, 1000);
   };
@@ -78,8 +75,7 @@ class Login extends Component {
   handleCloseError = () => {
     this.setState({ completed: 100 });
     clearInterval(this.timer);
-    tokenConnect = this.props.tokenConnect;
-    this.props.onRequestDelete();
+    this.props.onRequestDelete(this.props.tokenConnect);
     this.setState({ errorOpen: false, open: false });
   };
 
@@ -185,8 +181,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onRequestTocken: () => dispatch({ type: "API_TOKEN_REQUEST"}),
-    onRequestDelete: () => dispatch({ type: "API_TOKEN_DELETE", token: tokenConnect }),
-    onRequestAlways: () => dispatch({ type: "API_TOKEN_VALIDATE", token: tokenConnect })
+    onRequestDelete: (tokenConnect) => dispatch({ type: "API_TOKEN_DELETE", tokenConnect }),
+    onRequestAlways: (tokenConnect) => dispatch({ type: "API_TOKEN_VALIDATE", tokenConnect })
   };
 };
 

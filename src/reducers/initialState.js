@@ -8,7 +8,7 @@ const initialState = {
     professor: {professorId: null, nom: null, prenom: null, email: null, error: null, success: null },
     welcome: {connection: true },
     loader: {loading: false},
-    process: {start: false, idGp: null, end: false, error: false, message: null},
+    process: {start: false, idGp: null, end: false, error: false, message: null, players: null},
     students: {error: false, success: false, content: null},
     classes: {pending: false, classes: null, success: null, error: null, errorCode: null}
 }

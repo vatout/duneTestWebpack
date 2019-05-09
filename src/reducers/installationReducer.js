@@ -9,7 +9,7 @@ import {
     INSTALLATION_GAME_SUCCESS,
 } from '../actions/actionTypes';
 
-export function loader(state = initialState.installation, action) {
+export function installation(state = initialState.installation, action) {
     switch (action.type) {
         case DOWNLOAD_GAME:
             return { ...state, download: true, error: false };

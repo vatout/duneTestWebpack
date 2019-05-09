@@ -19,6 +19,8 @@ let idGame;
 let results;
 let token;
 
+// licence = TZDM-XT23-TAX5-4YNL
+
 // Keep a reference for dev mode
 let dev = false
 
@@ -108,6 +110,7 @@ function createWindow() {
       install.installPackage(fullPath, fileName);
       var myString = fileName.replace(/\D/g,'');
       myString = myString + '-' + token;
+      console.log("sending mystring downloadGood ", myString);
       mainWindow.webContents.send('downloadGood', myString);
     } else {
       mainWindow.webContents.send('download', "Une erreure est survenue pendant le téléchargement, veuillez recommencer s'il vous plait");
@@ -154,16 +157,16 @@ function createWindow() {
   // IPC test
   const { ipcMain } = require('electron')
   ipcMain.on('asynchronous-message', async (event, arg) => {
-    console.log(arg) // prints "ping"
+    console.log("message in electron from react on game launch ", arg) // prints "ping"
     var tmp = arg.split('-');
     idGp = tmp[0];
     idGame = tmp[1];
     var ret = play();
     setTimeout(function(){
       gameWindow.loadURL('http://localhost:3000');
-      gameWindow.show();
+      gameWindow.reload();
     }, 5000);
-
+    gameWindow.show();
     event.sender.send('asynchronous-reply', 'dataTreated')
   })
 
@@ -210,7 +213,7 @@ function createWindow() {
     console.log("fenetre sera fermee");
     e.preventDefault();
     gameWindow.hide();
-    results = idGp + '-' + "5-5-5-5-5-5-5-5";
+    results = idGp + '-' + "5-5-5-5";
     console.log("RESULTS ", results);
     mainWindow.webContents.send('pong', results);
 

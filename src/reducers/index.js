@@ -15,6 +15,7 @@ import { loader } from "./loaderReducer";
 import { process } from "./processReducer";
 import { students } from './studentsReducer';
 import { classes } from './classesReducer';
+import { installation } from './installationReducer';
 
 import storage from "redux-persist/lib/storage";
 
@@ -31,7 +32,8 @@ const reducers = combineReducers({
   tokenSession,
   process,
   students,
-  classes
+  classes,
+  installation
 })
 
 // const rootReducer = (state, action) => {

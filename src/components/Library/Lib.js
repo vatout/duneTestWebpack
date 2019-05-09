@@ -35,8 +35,6 @@ import SelectStudents from '../Blackboard/SelectStudents';
 const { ipcRenderer } = require('electron')
 var isInstalled = null;
 var etat = false;
-var id = null;
-var idType = null;
 
 const styles = theme => ({
   noResults:{
@@ -79,8 +77,6 @@ class Library extends Component {
       selectStudentsOpen: false,
       toLaunch: false,
       info: false,
-      idGame: null,
-      idTypeGame: null
     }
   }
 
@@ -153,23 +149,31 @@ class Library extends Component {
     }
   }
 
-  showInfo(idGame, idTypeGame, content) {
-    if (true) {
-      this.launch(idGame, idTypeGame);
-    } else if (this.state.availableGames) {
-      this.download(idGame);
+  handleShowInfo = (idGame, idTypeGame, content) => {
+    console.log("handleShowInfo ");
+    if (this.state.tabs === 0 && idGame && idTypeGame && content) {
+      this.launch(idGame, idTypeGame, content);
+      this.setState({selectStudentsOpen: false});
+    } else if (this.state.tabs === 1 && idGame && idTypeGame && content === null) {
+      console.log("download");
+       this.download(idGame);
+       this.setState({selectStudentsOpen: false});
     }
+    // if (content === null) {
+    //
+    // } else {
+    //   this.launch(idGame, idTypeGame);
+    // }
+    // this.setState({selectStudentsOpen: false})
   }
 
   download(idGame) {
-    id = idGame;
-    this.props.installProcess(this.props.token);
+    this.props.installProcess(this.props.token, idGame);
 
   }
 
-  launch(idGame, idTypeGame) {
-    idType = idTypeGame;
-    this.props.launchProcess(this.props.token, idGame, idTypeGame);
+  launch(idGame, idType, players) {
+    this.props.launchProcess(this.props.token, idGame, idType, players);
 
   }
   refresh = () => {
@@ -279,7 +283,7 @@ class Library extends Component {
                 </Grid>
 
                 <Grid style={{flex: 0.05, padding: 20}}>
-                  <Button onClick={() => {this.launch(1)}}>
+                  <Button >
                     <img src={require("../../assets/logo_get_app.png")} style={{height:"80px",}} alt="" />
                   </Button>
                 </Grid>
@@ -296,7 +300,7 @@ class Library extends Component {
           </Grid>
           <LibraryFilter open={this.state.open} mode={this.state.tabs} handleOpened={this.handleOpened}/>
           <SelectStudents open={this.state.selectStudentsOpen}
-                          launch={this.showInfo}
+                          launch={this.handleShowInfo}
                           toRender={this.state.info ? "info" : "launch"} maxPlayers={4}
                           idGame={this.state.idGame}
                         idTypeGame={this.state.idTypeGame}/>
@@ -306,11 +310,15 @@ class Library extends Component {
 
 }
 
+
+
 const mapStateToProps = state => {
   return {
     installed: state.games.installed,
     available: state.games.available,
     token: state.tokenSession.tokenSession,
+    download: state.installation.download,
+    install: state.installation.installation
   };
 };
 
@@ -318,8 +326,10 @@ const mapDispatchToProps = dispatch => {
   return {
     getGamesInstalled: (token, nom) => dispatch({ type: "GET_GAMES_INSTALLED", token, nom }),
     getGamesNotInstalled: (token, nom) => dispatch({ type: "GET_GAMES_NOT_INSTALLED", token, nom }),
-    installProcess: (token) => dispatch({ type: "DOWNLOAD_GAME", token, id: id }),
-    launchProcess: (token) => dispatch({ type: "PROCESS_START", token, id, idType }),
+    installProcess: (token, id) => dispatch({ type: "DOWNLOAD_GAME", token, id }),
+    launchProcess: (token, id, idType, players) => dispatch({
+      type: "PROCESS_START", token, id, idType, players
+    }),
   };
 };
 

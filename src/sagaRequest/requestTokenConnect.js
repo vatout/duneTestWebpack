@@ -28,7 +28,7 @@ function fetchTockenValidate(action) {
       'Content-Type': 'application/json',
     },
     data: {
-      'tokenTable': action.token,
+      'tokenTable': action.tokenConnect,
     }
   })
 }
@@ -44,7 +44,7 @@ function deleteTocken(action) {
       'Content-Type': 'application/json',
     },
     data: {
-      'tokenTable': action.token,
+      'tokenTable': action.tokenConnect,
     }
   })
 }
@@ -75,8 +75,8 @@ export function* workerTokenCreate(action) {
 
 export function* workerTokenDelete(action) {
   try {
-    console.log("TOKEN DELETE request ", action.token);
-    const response = yield call(deleteTocken, action.token);
+    console.log("TOKEN DELETE request ", action.tokenConnect);
+    const response = yield call(deleteTocken, action.tokenConnect);
     if (response.status !== 200) {
       throw response.status;
     }
@@ -95,7 +95,7 @@ export function* workerTokenValidate(action) {
   let professorId = [];
   let tokenSession = [];
   try {
-    console.log("table token create", action.token);
+    console.log("table token create", action.tokenConnect);
     const response = yield call(fetchTockenValidate, action);
     if (response.status !== 200) {
       throw response.status;

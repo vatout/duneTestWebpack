@@ -15,10 +15,10 @@ function endGame(data){
       },
       data: {
         'idGP': data.idGp,
-        'player1': data.player1,
-        'player2': data.player2,
-        'player3': data.player3,
-        'player4': data.player4,
+        'player1': data.players[0][0],
+        'player2': data.players[1][0],
+        'player3': data.players[2][0],
+        'player4': data.players[3][0],
         'scorePlayer1': data.scorePlayer1,
         'scorePlayer2': data.scorePlayer2,
         'scorePlayer3': data.scorePlayer3,
@@ -41,7 +41,7 @@ function createGame(data){
       data: {
         'idClasse': data.idClasse,
         'idGame': data.id,
-        'idTypeGame': data.idTypeGame,
+        'idTypeGame': data.idType,
       }
     });
 }
@@ -51,7 +51,9 @@ export function* workerEndProcess(data){
     console.log("workerEndProcess");
     console.log(data);
     const getToken = state => state.tokenSession.tokenSession;
+    const getPlayers = state => state.process.players;
     data.result.token = yield select(getToken);
+    data.result.players = yield select(getPlayers);
     const response = yield call(endGame, data.result);
     console.log("ERROR END PROCESS response ", response);
     if (response.data.status === 200) {
@@ -70,8 +72,7 @@ export function* workerCreateProcess(data){
     const response = yield call(createGame, data);
     if (response.status === 200) {
       console.log("workerLaunchProcess response", response);
-      data.idGP = response.data.idGP;
-      yield  put({ type: 'PROCESS_START_SUCCESS', data});
+      yield  put({ type: 'PROCESS_START_SUCCESS', idGP: response.data.idGP, players: data.players, data});
     }
   } catch (e) {
     yield put({ type: "DOWNLOAD_GAME_FAILURE"});
@@ -82,12 +83,13 @@ export function* workerLaunchProcess(data){
   try{
     console.log("workerLaunchProcess ", data);
     console.log("IPC message ping");
-    var message = data.data.idGP + "-" + data.data.id;
+    var message = data.idGP + "-" + data.data.id;
+    console.log(message);
     ipcRenderer.send('asynchronous-message', message)
     yield put({type: 'LOADER_START'});
 
   } catch (e) {
-    yield put({ type: "PROCESS_START_FAILURE", message: response });
+    yield put({ type: "PROCESS_START_FAILURE", message: "error" });
 
   }
 }
