@@ -74,7 +74,7 @@ export class LibraryList extends Component {
         let tmp = [], game= {};
         for (let i = 0; i < result.length; i++) {
         console.log(game);
-          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:9001/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
+          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://51.38.187.216:9000/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
           tmp.push(game);
         }
         this.setState({library_game_list: tmp, displayed_games: tmp});
@@ -87,7 +87,7 @@ export class LibraryList extends Component {
         let result = this.props.resultsNot;
         let tmp = [], game= {};
         for (let i = 0; i < result.length; i++) {
-          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://176.31.252.134:9001/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
+          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://51.38.187.216:9000/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
           tmp.push(game);
         }
         this.setState({available_game_list: tmp, displayed_games2: tmp});

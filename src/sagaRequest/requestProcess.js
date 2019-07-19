@@ -7,7 +7,7 @@ const { ipcRenderer } = require('electron')
 function endGame(data){
     console.log("endGame", data);
     return axios({
-      url: "http://176.31.252.134:9001/api/v1/play/endGame/",
+      url: "http://51.38.187.216:9000/api/v1/play/endGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +27,12 @@ function endGame(data){
     });
 }
 
-// TODO variable en dur à remplacer par const url = "http://176.31.252.134:9001/files/Games/" + data.id;
+// TODO variable en dur à remplacer par const url = "http://51.38.187.216:9000/files/Games/" + data.id;
 // alors ya pas de jeu avec id 2 faudra changer
 function createGame(data){
     console.log("createGame", data);
     return axios({
-      url: "http://176.31.252.134:9001/api/v1/play/createGame/",
+      url: "http://51.38.187.216:9000/api/v1/play/createGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

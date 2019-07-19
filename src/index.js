@@ -32,8 +32,8 @@ const reduxDevTools =
 
 let store = createStore(
     pReducer,
-//    compose(applyMiddleware(sagaMiddleware)));
-compose(applyMiddleware(sagaMiddleware), reduxDevTools));
+    compose(applyMiddleware(sagaMiddleware)));
+// compose(applyMiddleware(sagaMiddleware), reduxDevTools));
 
 const persistor = persistStore(store);
 // run the saga
