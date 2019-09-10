@@ -30,7 +30,7 @@ import Typography from "@material-ui/core/Typography";
 import MuiDialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {FilesList} from "../Blackboard/Files";
-import SelectStudents from '../Blackboard/SelectStudents';
+import SelectStudents from '../dialogs/SelectStudents';
 
 const { ipcRenderer } = require('electron')
 var isInstalled = null;
@@ -49,7 +49,7 @@ const styles = theme => ({
   }
 });
 
-function getGameDataObject(name, path, info, picPath, creator, categoryLabel, etat, idGame, idType) {
+function getGameDataObject(name, path, info, picPath, creator, categoryLabel, etat, idGame, idType, url) {
   return ({
     creator: creator,
     picPath: picPath,
@@ -61,7 +61,7 @@ function getGameDataObject(name, path, info, picPath, creator, categoryLabel, et
     idGame: idGame,
     idType: idType,
     available: [],
-
+    url: url
   });
 }
 
@@ -97,8 +97,8 @@ class Library extends Component {
     }
   }
 
-  handleOpened = (open) => {
-    this.setState({open: open});
+  handleOpened = () => {
+    this.setState({open: !this.state.open});
   }
 
   handleTabChange = (event, value) => {
@@ -111,32 +111,64 @@ class Library extends Component {
         this.props.getGamesInstalled(this.props.token, '');
         break;
     }
-
   };
+  handleSelectStudentsOpen = () => {
+    this.setState({selectStudentsOpen: !this.state.selectStudentsOpen});
+  }
 
   fillInstalled = () => {
       isInstalled = true;
       let result = this.props.installed;
-      let tmp = [], game= {};
+      let installedGames = [], game= {};
       if (result.length > 0) {
         for (let i = 0; i < result.length; i++) {
-          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://51.38.187.216:9000/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
-          tmp.push(game);
+          game = getGameDataObject(result[i].name,
+            "/games/", "informations sur le jeu",
+            "http://51.38.187.216:9090/files/apps/" + result[i].picPath,
+            result[i].creator,
+            isInstalled,
+            etat,
+            result[i].idGame,
+            result[i].idType);
+          installedGames.push(game);
         }
       }
-
-      this.setState({installedGames: tmp});
+      installedGames.push(getGameDataObject("testGameInstalled",
+        "/games/", "informations sur le jeu",
+        "../../assets/warning.png",
+        "duneFakeCreator",
+        "true",
+        "false",
+        "9999",
+        "99",
+        ));
+      this.setState({installedGames});
     }
 
   fillNotInstalled = () => {
       isInstalled = false;
       let result = this.props.available;
-      let tmp = [], game= {};
+      let availableGames = [], game= {};
       for (let i = 0; i < result.length; i++) {
-        game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://51.38.187.216:9000/files/apps/" + result[i].picPath, result[i].creator, isInstalled, etat, result[i].idGame, result[i].idType);
-        tmp.push(game);
+        game = getGameDataObject(result[i].name,
+          "/games/", "informations sur le jeu",
+          "http://51.38.187.216:9090/files/apps/" + result[i].picPath,
+          result[i].creator,
+          isInstalled,
+          etat,
+          result[i].idGame,
+          result[i].idType);
+        availableGames.push(game);
       }
-      this.setState({availableGames: tmp});
+      availableGames.push(getGameDataObject("testGameAvailable",
+      "/games/", "informations sur le jeu",
+      require("../../assets/warning.png"),
+      "duneFakeCreator",
+      "false",
+      "false",
+      "9999",
+      "99"));
+      this.setState({availableGames});
 
     }
 
@@ -153,11 +185,11 @@ class Library extends Component {
     console.log("handleShowInfo ");
     if (this.state.tabs === 0 && idGame && idTypeGame && content) {
       this.launch(idGame, idTypeGame, content);
-      this.setState({selectStudentsOpen: false});
+      this.handleSelectStudentsOpen
     } else if (this.state.tabs === 1 && idGame && idTypeGame && content === null) {
       console.log("download");
        this.download(idGame);
-       this.setState({selectStudentsOpen: false});
+       this.handleSelectStudentsOpen
     }
     // if (content === null) {
     //
@@ -303,7 +335,8 @@ class Library extends Component {
                           launch={this.handleShowInfo}
                           toRender={this.state.info ? "info" : "launch"} maxPlayers={4}
                           idGame={this.state.idGame}
-                        idTypeGame={this.state.idTypeGame}/>
+                        idTypeGame={this.state.idTypeGame}
+                        handleSelectStudentsOpen={this.handleSelectStudentsOpen}/>
         </div>
       );
   }

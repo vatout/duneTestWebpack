@@ -16,7 +16,7 @@ import ReactPlayer from "react-player";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import Slide from "@material-ui/core/Slide";
+import { Slide } from "@material-ui/core";
 import ZoomPlus from "@material-ui/icons/ZoomIn"
 import ZoomMinus from "@material-ui/icons/ZoomOut";
 
@@ -100,7 +100,7 @@ class ImageViewer extends Component {
                   </Toolbar>
                 </AppBar>
                 <DialogContent  style={{backgroundColor: 'rgb(254, 239, 194)', textAlign: 'center', width: "100%", height:"100%", display: 'block', position: 'relative'}} classes={{ root: classes.noPad }}>
-                    <img className={classes.test} src={"http://51.38.187.216:9000/files/fm/" + this.props.path} style={{width: this.state.zoom + '%'}}/>
+                    <img className={classes.test} src={"http://51.38.187.216:9090/files/fm/" + this.props.path} style={{width: this.state.zoom + '%'}}/>
                 </DialogContent>
               </Dialog>
             </div>

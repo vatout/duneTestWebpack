@@ -1,5 +1,8 @@
 import { call, put } from "redux-saga/effects";
 import axios from "axios";
+import { URL } from "./";
+
+//Licence de test VMR8-5Z66-25R2-EK3Y
 
 // checkStorage: fonction check ds localStorage si licence est présent
 // return: numéro de licence ou null
@@ -22,7 +25,7 @@ function fetchIdTable(action) {
   console.log("fetchTokenRequest ", action);
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/install",
+    url: URL + "/cnxTable/install",
     headers: {
       'Content-Type': 'application/json',
     },

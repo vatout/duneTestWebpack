@@ -1,13 +1,14 @@
 import { call, put, select } from "redux-saga/effects";
 import initialState from '../reducers/initialState';
 import axios from "axios";
+import { URL } from "./";
 
 const { ipcRenderer } = require('electron')
 
 function endGame(data){
     console.log("endGame", data);
     return axios({
-      url: "http://51.38.187.216:9000/api/v1/play/endGame/",
+      url: URL + "/play/endGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +28,12 @@ function endGame(data){
     });
 }
 
-// TODO variable en dur à remplacer par const url = "http://51.38.187.216:9000/files/Games/" + data.id;
+// TODO variable en dur à remplacer par const url = URL + "/files/Games/" + data.id;
 // alors ya pas de jeu avec id 2 faudra changer
 function createGame(data){
     console.log("createGame", data);
     return axios({
-      url: "http://51.38.187.216:9000/api/v1/play/createGame/",
+      url: URL + "/play/createGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

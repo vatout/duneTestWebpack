@@ -114,9 +114,19 @@ class selectStudents extends Component{
               </FormControl>
               <Typography style={{fontSize: '1.5em', color: 'grey', margin: '2%'}}>Vous pouvez choisir {this.props.maxPlayers - this.state.nbElevechoosen} élève(s)</Typography>
             </div>
-            <DialogActions style={{margin: '2% auto', display: this.state.nbElevechoosen === this.props.maxPlayers ? 'inherit' : 'none'}}>
+            {/* <DialogActions style={{margin: '2% auto', display: this.state.nbElevechoosen === this.props.maxPlayers ? 'inherit' : 'none'}}>
               <Button onClick={this.props.launch.bind(this, this.props.idGame, this.props.idTypeGame, this.state.studentsArray)} color="secondary">
                 LANCER LE JEU
+              </Button>
+            </DialogActions> */}
+            <DialogActions style={{margin: '2% auto'}}>
+              <Button onClick={this.props.launch.bind(this, this.props.idGame, this.props.idTypeGame, this.state.studentsArray)} color="secondary">
+                LANCER LE JEU
+              </Button>
+            </DialogActions>
+            <DialogActions style={{margin: '2% auto'}}>
+              <Button onClick={this.props.handleSelectStudentsOpen} color="secondary">
+                ANNULER
               </Button>
             </DialogActions>
             <Student students={this.props.students} maxPlayers={this.props.maxPlayers} choosen={this.changeChoosen} changeStudentArray={this.changeStudentArray}/>

@@ -9,7 +9,7 @@ import { workerDownloadGame, workerInstallationGame } from "./requestDownloadGam
 import { workerCreateProcess, workerLaunchProcess, workerEndProcess } from "./requestProcess";
 import { workerClean } from "./requestClean";
 import { get_all_students } from "./requestStudents";
-import { getUserClasses } from "./requestClasses";
+import { getUserClasses } from "./requestClasses.jsx";
 
 
 

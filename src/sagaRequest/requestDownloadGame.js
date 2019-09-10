@@ -4,13 +4,14 @@ import RcConfig from '../utils/download/RcConfig';
 import axios from "axios";
 import FileSaver from 'file-saver';
 import AdmZip from 'adm-zip';
+import { URL } from "./";
 
-// TODO variable en dur à remplacer par const url = "http://51.38.187.216:9000/files/Games/" + data.id;
+// TODO variable en dur à remplacer par const url = URL + "/files/Games/" + data.id;
 // alors ya pas de jeu avec id 2 faudra changer
 function getGame(data){
     console.log("getGame", data);
     return axios({
-      url: "http://51.38.187.216:9000/files/Games/" + data.id,
+      url: URL + "/files/Games/" + data.id,
       method: 'GET',
       responseType: 'blob',
       headers: {

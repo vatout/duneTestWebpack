@@ -1,6 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import initialState from '../reducers/initialState';
 import axios from "axios";
+import { URL } from "./";
 
 function getFiles(datas){
 
@@ -13,7 +14,7 @@ function getFiles(datas){
 
     return axios({
         method: 'post',
-        url: 'http://51.38.187.216:9000/api/v1/filesManager/getAll',
+        url: URL + '/filesManager/getAll',
         headers: {
             token: datas.token
         },

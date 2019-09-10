@@ -1,5 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import axios from "axios";
+import { URL } from "./";
 
 // deleteTocken: fonction demande à l'API de SUPPRIMER un token de connexion
 //  action: doit contenir idTable
@@ -7,7 +8,7 @@ import axios from "axios";
 function deleteTocken(action) {
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/delToken",
+    url: URL + "/cnxTable/delToken",
     headers: {
       'Content-Type': 'application/json',
     },

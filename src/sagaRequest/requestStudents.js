@@ -1,5 +1,6 @@
 import axios from "axios";
 import { call, put, select } from "redux-saga/effects";
+import { URL } from "./";
 
 //Get all students from a request with filter (from a classe or from all the school)
 export function get_all_students_api(datas){
@@ -11,7 +12,7 @@ export function get_all_students_api(datas){
 
   datasTosend.append('search', datas.search);
 
-  var url = datas.idClasse == 0 ? 'http://51.38.187.216:9000/api/v1/trombi/' : 'http://51.38.187.216:9000/api/v1/trombi/byClasse';
+  var url = datas.idClasse == 0 ? URL + '/trombi/' : URL + '/trombi/byClasse';
 
   return axios({
     method: 'post',

@@ -1,13 +1,15 @@
 import { call, put } from "redux-saga/effects";
 import axios from "axios";
+import { URL } from "./";
 
 // fetchTocken: fonction demande à l'API de générer un token de connexion
 //  action: doit contenir idTable
 //  return response promise object
 function fetchTocken(action) {
+  console.log(action.idTable, "IDTABLE");
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/genToken",
+    url: URL + "/cnxTable/genToken",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -23,7 +25,7 @@ function fetchTocken(action) {
 function fetchTockenValidate(action) {
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/verifToken",
+    url: URL + "/cnxTable/verifToken",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -37,14 +39,15 @@ function fetchTockenValidate(action) {
 //  action: doit contenir idTable
 //  return response promise object
 function deleteTocken(action) {
+  console.log("TOKEN DANS FETCH", action)
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/delToken",
+    url: URL + "/cnxTable/delToken",
     headers: {
       'Content-Type': 'application/json',
     },
     data: {
-      'tokenTable': action.tokenConnect,
+      'tokenTable': action,
     }
   })
 }
@@ -75,8 +78,8 @@ export function* workerTokenCreate(action) {
 
 export function* workerTokenDelete(action) {
   try {
-    console.log("TOKEN DELETE request ", action.tokenConnect);
-    const response = yield call(deleteTocken, action.tokenConnect);
+    const token = action.tokenConnect;
+    const response = yield call(deleteTocken, token);
     if (response.status !== 200) {
       throw response.status;
     }
@@ -91,15 +94,18 @@ export function* workerTokenDelete(action) {
   }
 }
 
+
 export function* workerTokenValidate(action) {
   let professorId = [];
   let tokenSession = [];
   try {
     console.log("table token create", action.tokenConnect);
     const response = yield call(fetchTockenValidate, action);
+    console.log("verifToken", response);
     if (response.status !== 200) {
       throw response.status;
     }
+    console.log("verifToken", response);
     professorId = response.data.idProf;
     tokenSession = response.data.token;
     console.log("token validate response :", response);

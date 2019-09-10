@@ -1,10 +1,11 @@
 import axios from "axios";
 import initialState from '../reducers/initialState';
 import { call, put } from "redux-saga/effects";
+import { URL } from "./";
 
 function getUserById(data){
 
-    const url = "http://51.38.187.216:9000/api/v1/users/infos/" + data.idProf;
+    const url = URL + "/users/infos/" + data.idProf;
     return axios.get(url, {
         headers: {
             Accept: 'application/json',

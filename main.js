@@ -1,13 +1,16 @@
 'use strict'
 
 // Import parts of electron to use
+// import initIpcListeners from "./ipcMain/listeners";
+
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
 const cp = require('child_process');
 const psTree = require('ps-tree');
-const install = require('./src/utils/install')
+const install = require('./src/electron/install')
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -37,48 +40,36 @@ if (process.platform === 'win32') {
 }
 
 function play() {
-  console.log("function play");
-  var spawn = require('child_process').spawn;
-  let path = install.getPackageInstallPath();
-  path = path + "duneGame"+ idGame+".zip";
-  console.log("PATH", path);
-  // var cmd = 'yarn --cwd ' + path + ' start';
-  childProcess = spawn('yarn', ['start'], { cwd: path});
-  childProcess.stdout.on('data', function (data) {
-    var log = data.toString();
-    console.log('stdout: ' + log);
-    if (log.includes("Compiled")) {
-      gameWindow.loadURL('http://localhost:3000');
-      gameWindow.webContents.send('studentList', players);
-      gameWindow.show();
-    }
-  });
-  console.log(childProcess);
-  childProcess.stderr.on('data', function (data) {
-    console.log('stderr: ' + data.toString());
-  });
+  if (idGame === "9999") {
+    gameWindow.loadURL(`https://zaangetsuu.github.io/ProtoDune1/`);
+    gameWindow.webContents.send('studentList', players);
+    gameWindow.show();
+  } else {
+    console.log("function play");
+    var spawn = require('child_process').spawn;
+    let path = install.getPackageInstallPath();
+    path = path + "duneGame"+ idGame+".zip";
+    console.log("PATH", path);
+    // var cmd = 'yarn --cwd ' + path + ' start';
+    childProcess = spawn('yarn', ['start'], { cwd: path});
+    childProcess.stdout.on('data', function (data) {
+      var log = data.toString();
+      console.log('stdout: ' + log);
+      if (log.includes("Compiled")) {     
+        gameWindow.loadURL('http://localhost:3000');
+        gameWindow.webContents.send('studentList', players);
+        gameWindow.show();
+      }
+      
+    });
+    console.log(childProcess);
+    childProcess.stderr.on('data', function (data) {
+      console.log('stderr: ' + data.toString());
+    });
+  }
 
-  // childProcess.on('exit', function (code) {
-  //   console.log('child process exited with code ' + code.toString());
-  // });
 
-  // return new Promise(function (resolve, reject) {
-  //   console.log("exec yarn start");
-  //   var path = install.getPackageInstallPath();
-  //   path = path + "duneGame"+ idGame+".zip";
-  //   console.log("PATH", path)
-  //   childProcess = cp.exec('yarn --cwd ' + path + ' start', (err, stdout, stderr) => {
-  //     // if (err) {
-  //     //   // node couldn't execute the command
-  //     //   return;
-  //     // }
-  //
-  //     // the *entire* stdout and stderr (buffered)
-  //     console.log('stdout', stdout);
-  //     console.log(`stderr: ${stderr}`);
-  //   });
-  //
-  // })
+  
 }
 
 
@@ -106,6 +97,7 @@ function createWindow() {
       nodeIntegration: true
     }
   })
+
   mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
     let homePath = global.process.env.HOME || global.process.env.USERPROFILE;
     let storagePath = homePath + "/.DuneGames/";
@@ -198,6 +190,8 @@ function createWindow() {
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
+    gameWindow.loadURL(`file://${__dirname}/games/WebGL/index.html`);
+    //gameWindow.show();
     gameWindow.hide();
     // Open the DevTools automatically if developing
     if (dev) {
@@ -284,3 +278,28 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+// On app activation (e.g. when clicking dock icon), re-create BrowserWindow if necessary
+// app.on(
+// 	"activate",
+// 	async () => {
+// 		if (!getWindow()) {
+// 			setWindow(await createWindow());
+// 		}
+// 	},
+// );
+
+// (async () => {
+// 	// Wait for Electron to be initialized
+// 	await app.whenReady();
+
+// 	// Set up translations, messaging between main and renderer processes, and application menu
+// 	initI18n();
+// 	buildMenu();
+// 	initIpcListeners();
+
+// 	// Create and show BrowserWindow
+// 	setWindow(await createWindow());
+
+// 	updateApp();
+// })();

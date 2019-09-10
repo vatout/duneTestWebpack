@@ -6,7 +6,7 @@ import SplashScreen from './SplashScreen';
 import Menu from './Navigation/Menu';
 import Login from './Navigation/login';
 import NoMatch from './Navigation/404';
-import Board from './Blackboard/Board';
+import Board from './Blackboard/BoardMenu.jsx';
 import Paint from './Blackboard/paint';
 // library Test
 import Library from './Library/Lib';
@@ -21,8 +21,7 @@ import { PrivateRoute } from '../utils/PrivateRoute'
 import { connect } from "react-redux";
 
 import Invacouleur from '../games/invacouleur/Invacouleur'
-import Dialog from "@material-ui/core/es/Dialog/Dialog";
-import DialogContent from "@material-ui/core/es/DialogContent/DialogContent";
+import { Dialog, DialogContent} from "@material-ui/core";
 
 import loader from '../assets/loaders/loading.gif';
 
@@ -87,23 +86,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-// <HashRouter>
-//   <MuiThemeProvider theme={Theme}>
-//     <Switch>
-//       <PrivateRoute exact path='/menu' component={Menu}/>
-//       <PrivateRoute exact path='/paint' component={Paint}/>
-//       <PrivateRoute exact path='/blackboard' component={Board}/>
-//       <PrivateRoute exact path='/library' component={Library}/>
-//       <PrivateRoute exact path='/media' component={Media}/>
-//       <PrivateRoute exact path='/param' component={Param}/>
-//       <PrivateRoute exact path='/files' component={Files}/>
-//       <Route exact path='/install' component={Install} />
-//       <Route exact path='/login' component={Login}/>
-//       <Route exact path='/' component={SplashScreen}/>
-//       <Route exact path='/games/invacouleur' component={Invacouleur}/>
-//       <Route component={NoMatch} />
-//     </Switch>
-//     {licence == null ? (<Redirect to='/install' />) : true}
-//   </MuiThemeProvider>
-// </HashRouter>

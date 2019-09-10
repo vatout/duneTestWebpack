@@ -1,6 +1,6 @@
 import axios from "axios";
 import { call, put, select } from "redux-saga/effects";
-
+import { URL } from "./";
 
 //Get all classes of a professor.
 export function get_user_classes_api(datas) {
@@ -9,7 +9,7 @@ export function get_user_classes_api(datas) {
 
   return axios({
     method: 'get',
-    url: 'http://51.38.187.216:9000/api/v1/trombi/classes',
+    url: URL + '/trombi/classes',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -18,7 +18,10 @@ export function get_user_classes_api(datas) {
   });
 }
 
-//Get all classes of a user
+/**
+ * 
+ * @param {*} datas 
+ */
 export function* getUserClasses(datas){
 
   try{
