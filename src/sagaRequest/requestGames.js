@@ -5,7 +5,7 @@ import axios from "axios";
 function updateGameList(data){
     console.log("update game list", data);
     return axios({
-      url: "http://51.38.187.216:9000/api/v1/table/gestApps/appInstalled",
+      url: "https://api.dune-table.com/table/gestApps/appInstalled",
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ function updateGameList(data){
 function getGamesInstalled(data){
   const datasTosend = new FormData();
   datasTosend.append('nom', data.nom);
-  const url = "http://51.38.187.216:9000/api/v1/table/gestApps/appsOnTable";
+  const url = "https://api.dune-table.com/table/gestApps/appsOnTable";
   return axios({
     method: 'post',
     url: url,
@@ -36,7 +36,7 @@ function getGamesInstalled(data){
 function getGamesNotInstalled(data){
   const datasTosend = new FormData();
   datasTosend.append('nom', data.nom);
-    const url = "http://51.38.187.216:9000/api/v1/table/gestApps/appsNotOnTable";
+    const url = "https://api.dune-table.com/table/gestApps/appsNotOnTable";
     return axios({
     method: 'post',
     url: url,

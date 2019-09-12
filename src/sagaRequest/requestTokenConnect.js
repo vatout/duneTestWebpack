@@ -7,7 +7,7 @@ import axios from "axios";
 function fetchTocken(action) {
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/genToken",
+    url: "https://api.dune-table.com/cnxTable/genToken",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -23,7 +23,7 @@ function fetchTocken(action) {
 function fetchTockenValidate(action) {
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/verifToken",
+    url: "https://api.dune-table.com/cnxTable/verifToken",
     headers: {
       'Content-Type': 'application/json',
     },
@@ -39,7 +39,7 @@ function fetchTockenValidate(action) {
 function deleteTocken(action) {
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/delToken",
+    url: "https://api.dune-table.com/cnxTable/delToken",
     headers: {
       'Content-Type': 'application/json',
     },

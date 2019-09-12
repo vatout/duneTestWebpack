@@ -7,7 +7,7 @@ const { ipcRenderer } = require('electron')
 function endGame(data){
     console.log("endGame", data);
     return axios({
-      url: "http://51.38.187.216:9000/api/v1/play/endGame/",
+      url: "https://api.dune-table.com/play/endGame",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ function endGame(data){
 function createGame(data){
     console.log("createGame", data);
     return axios({
-      url: "http://51.38.187.216:9000/api/v1/play/createGame/",
+      url: "https://api.dune-table.com/play/createGame/",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

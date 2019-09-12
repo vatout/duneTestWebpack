@@ -127,7 +127,7 @@ class Media extends Component {
                               style={{margin: 0}}
                             className='react-player'
                               url={[
-                                {src: 'http://51.38.187.216:9000/files/fm/' + this.props.path, type: 'video/mp4'},
+                                {src: 'https://api.dune-table.com/files/fm/' + this.props.path, type: 'video/mp4'},
                               ]}
                             width='1580px'
                             height='820px'

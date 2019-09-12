@@ -7,7 +7,7 @@ import axios from "axios";
 function deleteTocken(action) {
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/delToken",
+    url: "https://api.dune-table.com/cnxTable/delToken",
     headers: {
       'Content-Type': 'application/json',
     },

@@ -9,7 +9,7 @@ export function get_user_classes_api(datas) {
 
   return axios({
     method: 'get',
-    url: 'http://51.38.187.216:9000/api/v1/trombi/classes',
+    url: 'https://api.dune-table.com/trombi/classes',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

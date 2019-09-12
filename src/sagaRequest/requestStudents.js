@@ -11,7 +11,7 @@ export function get_all_students_api(datas){
 
   datasTosend.append('search', datas.search);
 
-  var url = datas.idClasse == 0 ? 'http://51.38.187.216:9000/api/v1/trombi/' : 'http://51.38.187.216:9000/api/v1/trombi/byClasse';
+  var url = datas.idClasse == 0 ? 'https://api.dune-table.com/trombi/' : 'https://api.dune-table.com/trombi/byClasse';
 
   return axios({
     method: 'post',

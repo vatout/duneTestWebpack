@@ -10,7 +10,7 @@ import AdmZip from 'adm-zip';
 function getGame(data){
     console.log("getGame", data);
     return axios({
-      url: "http://51.38.187.216:9000/files/Games/" + data.id,
+      url: "https://api.dune-table.com/files/Games/" + data.id,
       method: 'GET',
       responseType: 'blob',
       headers: {

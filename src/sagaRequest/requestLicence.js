@@ -22,7 +22,7 @@ function fetchIdTable(action) {
   console.log("fetchTokenRequest ", action);
   return axios({
     method: 'POST',
-    url: "http://51.38.187.216:9000/api/v1/cnxTable/install",
+    url: "https://api.dune-table.com/cnxTable/install",
     headers: {
       'Content-Type': 'application/json',
     },

@@ -13,7 +13,7 @@ function getFiles(datas){
 
     return axios({
         method: 'post',
-        url: 'http://51.38.187.216:9000/api/v1/filesManager/getAll',
+        url: 'https://api.dune-table.com/filesManager/getAll',
         headers: {
             token: datas.token
         },

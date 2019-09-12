@@ -4,7 +4,7 @@ import { call, put } from "redux-saga/effects";
 
 function getUserById(data){
 
-    const url = "http://51.38.187.216:9000/api/v1/users/infos/" + data.idProf;
+    const url = "https://api.dune-table.com/users/infos/" + data.idProf;
     return axios.get(url, {
         headers: {
             Accept: 'application/json',
