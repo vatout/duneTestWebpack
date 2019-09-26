@@ -25,6 +25,7 @@ export default class LibraryListItem extends Component {
                         </Typography>
                         <Typography  color="textSecondary" gutterBottom>
                             {desc}
+                            yolyololo
                         </Typography>
                     </CardContent>
                 </Card>

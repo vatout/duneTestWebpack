@@ -1,5 +1,6 @@
 const fs = require('fs')
 const zipUtil = require('adm-zip')
+const fsPower = require('fs-extra')
 
 let packageDir;
 // module.exports = {
@@ -11,8 +12,9 @@ let packageDir;
  * @return {string}
  */
 exports.getStoragePath = function () {
-  let homePath = global.process.env.HOME || global.process.env.USERPROFILE;
+  let homePath = app.getPath("downloads");
   let storagePath = homePath + "/.DuneGames/";
+  console.log(storagePath);
   if (!fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath);
   }
@@ -53,7 +55,19 @@ function getInstalledPackages() {
 
 exports.installPackage = function(packageFilePath, dirName) {
   console.log("installPackage ", packageFilePath);
+  let homePath = app.getAppPath();
+  let storagePath = homePath + "/games/" + dirname;
+  console.log("yolooooooo")
+  fsPower.copy(storagePath, 'C:\Users\artyoum\Work\duneTestWebpack\.DuneGames', err => {
+    if (err) return console.error(err)
+    
+    console.log('success!')
+  })
+
   return new Promise(function (resolve, reject) {
+
+
+
     let installPackagesPath = exports.getPackageInstallPath();
 //    let dirName = "pak-" + (new Date().getTime());
     packageDir = installPackagesPath + dirName;

@@ -23,6 +23,7 @@ function fetchTocken(action) {
 //  action: doit contenir le tokenTable à vérifier
 //  return response promise object
 function fetchTockenValidate(action) {
+  console.log(action);
   return axios({
     method: 'POST',
     url: URL + "/cnxTable/verifToken",

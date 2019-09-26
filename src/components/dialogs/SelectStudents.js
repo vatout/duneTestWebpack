@@ -139,11 +139,18 @@ class selectStudents extends Component{
           <Dialog open={this.props.open}
                   fullWidth={true}
                   maxWidth='lg'>
-            <div style={{textAlign: 'center'}}>
+            <div style={{textAlign: 'center', justifyContent:'center', alignItems: 'center'}}>
               Description du jeu
-              <Button onClick={this.props.launch.bind(this, this.props.idGame, this.props.idTypeGame, null)} color="secondary">
-                Télécharger le jeu
-              </Button>
+              <DialogActions style={{margin: '2% auto', justifyContent:'center', alignItems: 'center'}}>
+                <Button onClick={this.props.launch.bind(this, this.props.idGame, this.props.idTypeGame, null)} color="secondary">
+                  Télécharger le jeu
+                </Button>
+              </DialogActions>
+              <DialogActions style={{margin: '2% auto', justifyContent:'center', alignItems: 'center'}}>
+                <Button onClick={this.props.handleSelectStudentsOpen} color="secondary">
+                  ANNULER
+                </Button>
+              </DialogActions>
             </div>
           </Dialog>
         </div>

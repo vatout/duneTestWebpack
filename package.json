@@ -51,6 +51,7 @@
     "axios": "^0.18.0",
     "electron": "^4.0.0",
     "file-saver": "^2.0.1",
+    "fs-extra": "^8.1.0",
     "material-ui-image": "^3.2.0",
     "npm-cli": "^0.1.0",
     "ps-tree": "^1.2.0",

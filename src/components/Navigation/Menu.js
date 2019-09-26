@@ -17,6 +17,7 @@ export class Menu extends Component {
       games: false,
       settings: false,
       open: false,
+      disconnect: false,
     }
   }
   componentDidMount = () => {
@@ -33,7 +34,7 @@ export class Menu extends Component {
   }
 
   handleDisconnect = () => {
-    window.location = '/login';
+    this.setState({disconnect: true})
     this.props.onDisconnect();
   }
 
@@ -42,13 +43,13 @@ export class Menu extends Component {
   }
 
   decoback = () => {
-    window.location = '/menu';
     this.setState({ open: false });
   }
 
   render() {
     return (
         <div style={Theme.root}>
+          {this.state.disconnect && <Redirect to="/login" />}
           <Dialog
               open={this.props.connection}
               onClose={this.handleConnect}

@@ -6,12 +6,10 @@ import FileSaver from 'file-saver';
 import AdmZip from 'adm-zip';
 import { URL } from "./";
 
-// TODO variable en dur à remplacer par const url = URL + "/files/Games/" + data.id;
-// alors ya pas de jeu avec id 2 faudra changer
 function getGame(data){
     console.log("getGame", data);
     return axios({
-      url: URL + "/files/Games/" + data.id,
+      url: URL + "/files/games/" + data.id,
       method: 'GET',
       responseType: 'blob',
       headers: {
@@ -40,17 +38,23 @@ export function* workerInstallationGame(data){
   try{
     console.log("workerInstallGame");
     console.log(data);
-//    const response = yield call(installPackage, data.path);
-      // if (response.data.status === 200) {
-      //     const resultsNot = response.data.response;
-      //     yield  put({ type: 'INSTALLATION_GAME_SUCCESS'});
-      // }
+   const response = yield call(installPackage, data.path);
+      if (response.data.status === 200) {
+          const resultsNot = response.data.response;
+          yield  put({ type: 'INSTALLATION_GAME_SUCCESS'});
+      }
   } catch (e) {
     yield put({ type: "INSTALLATION_GAME_FAILURE"});
   }
 }
 
 export function* workerDownloadGame(data){
+  // var tmpPath = RcConfig.getStoragePath();
+  // var fileName = "duneGame" + data.id + ".zip";
+  // var tmpSaveFilePath = tmpPath + fileName;
+  // yield  put({ type: 'INSTALLATION_GAME', path: tmpSaveFilePath});
+
+
   try{
     console.log("workerDownloadGame");
     const response = yield call(getGame,data);
@@ -62,6 +66,7 @@ export function* workerDownloadGame(data){
       const answer = window.URL.createObjectURL(new Blob([response.data]));
       console.log("answer ", answer);
       console.log("path ", tmpPath);
+      console.log("path ", fileName);
       const tmp = FileSaver.saveAs(response.data, fileName);
 
       console.log("workerDownloadGame response", response);

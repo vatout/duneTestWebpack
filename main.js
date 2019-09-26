@@ -99,7 +99,7 @@ function createWindow() {
   })
 
   mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
-    let homePath = global.process.env.HOME || global.process.env.USERPROFILE;
+    let homePath = app.getPath("downloads");
     let storagePath = homePath + "/.DuneGames/";
     if (!fs.existsSync(storagePath)) {
       fs.mkdirSync(storagePath);
