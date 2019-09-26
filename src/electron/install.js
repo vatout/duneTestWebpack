@@ -11,8 +11,13 @@ let packageDir;
  *
  * @return {string}
  */
+<<<<<<< HEAD
 exports.getStoragePath = function () {
   let homePath = app.getPath("downloads");
+=======
+function getStoragePath() {
+  let homePath = global.process.env.HOME || global.process.env.USERPROFILE;
+>>>>>>> 86df42fee36da3a0c37ad8ffdffbad08b7ad3183
   let storagePath = homePath + "/.DuneGames/";
   console.log(storagePath);
   if (!fs.existsSync(storagePath)) {
