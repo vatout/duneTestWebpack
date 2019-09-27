@@ -9,6 +9,7 @@ import student from "../../assets/student.png";
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
 import { Component } from 'react';
+import { URL } from "../../sagaRequest";
 
 
 const styles = {
@@ -107,7 +108,7 @@ class Student extends Component {
               <CardActionArea>
                 <Avatar
                   alt="Adelle Charles"
-                  src={obj[i].picPath ? 'http://51.38.187.216:9090/files/eleves/' + obj[i].picPath : student}
+                  src={obj[i].picPath ? URL + '/files/eleves/' + obj[i].picPath : student}
                   className={classNames(classes.avatar, classes.bigAvatar)}
                   style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
                 />

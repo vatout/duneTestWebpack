@@ -11,6 +11,7 @@ import Tab from '@material-ui/core/Tab';
 import {connect} from "react-redux";
 import './../../assets/scroll.css';
 import LibrarySearchBar from './LibrarySearchBar';
+import { URL } from "../../sagaRequest";
 
 function getFakeInfo() {
     return ("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
@@ -74,7 +75,7 @@ export class LibraryList extends Component {
         let tmp = [], game= {};
         for (let i = 0; i < result.length; i++) {
         console.log(game);
-          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://51.38.187.216:9090/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
+          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", URL + "/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
           tmp.push(game);
         }
         this.setState({library_game_list: tmp, displayed_games: tmp});
@@ -87,7 +88,7 @@ export class LibraryList extends Component {
         let result = this.props.resultsNot;
         let tmp = [], game= {};
         for (let i = 0; i < result.length; i++) {
-          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", "http://51.38.187.216:9090/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
+          game = getGameDataObject(result[i].name, "/games/", "informations sur le jeu", URL + "/files/apps/" + result[i].picPath, result[i].creator, categoryLabel1, etat);
           tmp.push(game);
         }
         this.setState({available_game_list: tmp, displayed_games2: tmp});

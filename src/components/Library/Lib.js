@@ -31,6 +31,8 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {FilesList} from "../Blackboard/Files";
 import SelectStudents from '../dialogs/SelectStudents';
+import { URL } from "../../sagaRequest";
+
 
 const { ipcRenderer } = require('electron')
 var isInstalled = null;
@@ -124,7 +126,7 @@ class Library extends Component {
         for (let i = 0; i < result.length; i++) {
           game = getGameDataObject(result[i].name,
             "/games/", "informations sur le jeu",
-            "http://51.38.187.216:9090/files/apps/" + result[i].picPath,
+            URL + "/files/apps/" + result[i].picPath,
             result[i].creator,
             isInstalled,
             etat,
@@ -152,7 +154,7 @@ class Library extends Component {
       for (let i = 0; i < result.length; i++) {
         game = getGameDataObject(result[i].name,
           "/games/", "informations sur le jeu",
-          "http://51.38.187.216:9090/files/apps/" + result[i].picPath,
+          URL + "/files/apps/" + result[i].picPath,
           result[i].creator,
           isInstalled,
           etat,

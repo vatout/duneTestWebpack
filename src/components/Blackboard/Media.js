@@ -23,6 +23,8 @@ import VolumeDown from '@material-ui/icons/VolumeDown';
 import VolumeUp from '@material-ui/icons/VolumeUp';
 import VolumeOff from '@material-ui/icons/VolumeOff';
 import {Card, Paper} from "@material-ui/core";
+import { URL } from "../../sagaRequest";
+
 
 
 const styles = {
@@ -127,7 +129,7 @@ class Media extends Component {
                               style={{margin: 0}}
                             className='react-player'
                               url={[
-                                {src: 'http://51.38.187.216:9090/files/fm/' + this.props.path, type: 'video/mp4'},
+                                {src: URL + '/files/fm/' + this.props.path, type: 'video/mp4'},
                               ]}
                             width='1580px'
                             height='820px'

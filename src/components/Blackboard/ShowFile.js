@@ -13,6 +13,8 @@ import Media from './Media';
 import Slide from '@material-ui/core/Slide';
 import PdfViewer from './PdfViewer';
 import ImgViewer from './ImageViewer';
+import { URL } from "../../sagaRequest";
+
 
 const styles = {
   scrollPaper:{
@@ -81,7 +83,7 @@ class ShowFile extends Component {
                 this.props.type === 'IMG' ?
                   <ImgViewer file={this.state.showFile} closeFile={this.handleCloseFile} path={this.props.path} title={this.props.title} />
                  : this.props.type === "PDF" ?
-                    <PdfViewer mode={"tableau"} url={"http://51.38.187.216:9090/files/fm/" + this.props.path} title={this.props.title} closeFile={this.handleCloseFile}/>
+                    <PdfViewer mode={"tableau"} url={URL + "/files/fm/" + this.props.path} title={this.props.title} closeFile={this.handleCloseFile}/>
                     : this.props.type === "MP4" ?
                       <Media path={this.props.path} title={this.props.title} file={this.state.showFile} closeFile={this.handleCloseFile}/>
                       : ''
