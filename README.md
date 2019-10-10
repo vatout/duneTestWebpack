@@ -17,7 +17,7 @@
 
 ## Minimal Electron, React and Webpack boilerplate
 
-Minimal Electron, React, PostCSS and Webpack boilerplate to help you get started with building your next app.
+Dune Table software
 
 ### Table of contents
 
@@ -31,7 +31,7 @@ Minimal Electron, React, PostCSS and Webpack boilerplate to help you get started
 #### Clone this repo
 
 ```
-git clone https://github.com/alexdevero/electron-react-webpack-boilerplate.git
+git clone 
 ```
 
 #### Install dependencies
@@ -56,26 +56,6 @@ or
 yarn start
 ```
 
-#### Build the app (automatic)
-
-```
-npm run package
-```
-or
-```
-yarn package
-```
-
-#### Build the app (manual)
-
-```
-npm run build
-```
-or
-```
-yarn build
-```
-
 #### Test the app (after `npm run build` || `yarn run build`)
 ```
 npm run prod
@@ -83,11 +63,3 @@ npm run prod
 ```
 yarn prod
 ```
-
-### Code of Conduct
-
-[Contributor Code of Conduct](code-of-conduct.md). By participating in this project you agree to abide by its terms.
-
-### License
-
-MIT © [Alex Devero](https://alexdevero.com).
